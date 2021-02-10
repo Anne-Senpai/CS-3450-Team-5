@@ -1,1 +1,53 @@
-the requirements definition.
+1. Introduction and Context:
+
+	The project is designed to aid customers in finding parking spots for big upcoming campus events. It will also allow hosts 
+to list their own personal parking spaces for rent. Larger campus-wide parking areas will be available for reservation as well. 
+A web application will be implemented for customers to find and reserve (purchase) parking spaces. It will allow different types
+ of users to log into accounts. A customer can view and reserve spaces and will be given verification for when they arrive at the
+ spot. A manager can post their spaces for reservation.
+
+2. Users and their Goals:
+
+	The software will provide functionality for the following actors:
+
+	-Global Admin: Verifies or creates manager accounts.
+	-Customer: Reserves parking spots and manages reservations.
+	-Lot Manager: Posts parking spots, manages parking spot prices, creates events.
+	-Lot Attendant: Validates customer purchases on arrival.
+
+3. Functional Requirements:
+
+	-Customer can reserve a parking spot
+		-The parking spot owner decides the cost - 25% of payment goes to service
+		-Customer receives verification of reservation (QR code or other)
+	-Customer can cancel reservation without fee more than 24hr prior to reservation
+	-Parking spots are not all the same (size, distance/accessibility to event)
+	-Customer must create a user account
+	-Managers must create a user account
+	-A lot attendant can verify a customer’s purchase
+
+4. Non-functional Requirements:
+
+	-Parking spots are managed individually 
+	-Application is browser-based and mobile optimized
+	-Utilize Django framework & Bootstrap 4 libraries
+	-The development team shall meet weekly to plan the following week’s tasks and discuss previous tasks.
+
+5. Future Features:
+
+	This section contains a list of ideas or features that are beyond the scope of the project.
+
+	-Discounts
+	-Maps
+	-Countdown clock for how much time you have left
+
+6. Glossary:
+
+	This section contains a list of important terms and their definitions.
+
+	-Beta testing: A series of volunteers will ‘test’ the program, by looking for functionality, as well as doing things that the programer possibly did not expect, thereby catching errors that can then be fixed.
+	-Unit Testing: A series of tests to determine how functional the 
+	-Django Framework: 
+	-Bootstrap: A set of libraries for CSS and JavaScript
+	-Application: the parking program as a whole.
+
