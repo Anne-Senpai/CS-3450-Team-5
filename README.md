@@ -4,7 +4,7 @@ Organization:
 Docs - Contains use case UML's, Documentation of work and methodology, etc.
 Src - Contains the thus far funcitonal code
 Src in progress - Contains the code that we are currently working on
-Other - contains any other foles that might be relevent.
+Other - contains any other files that might be relevent.
 
 Version Control:
 
