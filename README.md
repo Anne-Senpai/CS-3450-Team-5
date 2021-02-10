@@ -29,7 +29,7 @@ Build instructions:
 
 pip install -r requirement.txt\
 cd .../bbpg/\
-python manage.py runserver\
+python manage.py runserver  
 
 Unit Testing Instructions:
 
