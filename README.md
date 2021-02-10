@@ -1,10 +1,10 @@
 # CS-3450-Team-5
 Organization:
 
-Docs - Contains use case UML's, Documentation of work and methodology, etc.
-Src - Contains the thus far funcitonal code
-Src in progress - Contains the code that we are currently working on
-Other - contains any other foles that might be relevent.
+Docs - Contains use case UML's, Documentation of work and methodology, etc.\
+Src - Contains the thus far funcitonal code.  
+Src in progress - Contains the code that we are currently working on.  
+Other - contains any other files that might be relevent.  
 
 Version Control:
 
@@ -27,9 +27,9 @@ have these set up on our personal computers for use.
 
 Build instructions:
 
-pip install -r requirement.txt
-cd .../bbpg/
-python manage.py runserver
+pip install -r requirement.txt\
+cd .../bbpg/\
+python manage.py runserver  
 
 Unit Testing Instructions:
 
@@ -42,12 +42,12 @@ System Testing Instructions:
 
 When testing the system, there are several cases that should be checked for;
 
-purchasing a parking space for varying amounts of time
-overriding a parking space sale
-refunding a parking space sale
-adding time to your purchased space
-verifying the code for a purchased space
-etc.
+purchasing a parking space for varying amounts of time\
+overriding a parking space sale\
+refunding a parking space sale\
+adding time to your purchased space\
+verifying the code for a purchased space\
+etc.\
 
 Check all of these, and more to ensure program functinality.
 
