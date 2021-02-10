@@ -27,9 +27,9 @@ have these set up on our personal computers for use.
 
 Build instructions:
 
-pip install -r requirement.txt
-cd .../bbpg/
-python manage.py runserver
+pip install -r requirement.txt\
+cd .../bbpg/\
+python manage.py runserver\
 
 Unit Testing Instructions:
 
@@ -42,12 +42,12 @@ System Testing Instructions:
 
 When testing the system, there are several cases that should be checked for;
 
-purchasing a parking space for varying amounts of time
-overriding a parking space sale
-refunding a parking space sale
-adding time to your purchased space
-verifying the code for a purchased space
-etc.
+purchasing a parking space for varying amounts of time\
+overriding a parking space sale\
+refunding a parking space sale\
+adding time to your purchased space\
+verifying the code for a purchased space\
+etc.\
 
 Check all of these, and more to ensure program functinality.
 
