@@ -21,9 +21,15 @@
 				<div class="card w-100 mt-5">
 					<h1 class="h4 card-header text-center">Verify Your Reservation</h1>
 					<div class="card-body">
-						<label class="pr-3" for="vCode">Verification Code: </label><input id="vCode" type="text"/>
+						<label class="pr-3" for="vCode">Verification Code: </label><input id="vCode" type="text" list="res_list"/>
 						<button id="submit" class="btn btn-primary">Submit</button>
 						<p id="error" class="text-center" style="color: red" hidden>That reservation does not exist!</p>
+						<datalist id="res_list">
+							<option>12345</option>
+							<option>6789</option>
+							<option>101112</option>
+							<option>3145</option>
+						</datalist>
 					</div>
 				</div>
 			</div>
