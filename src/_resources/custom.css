@@ -1,5 +1,15 @@
 @import url("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css");
 
+header{
+    background: #00263A;
+    padding: 20px 0px 20px 20px;
+    margin: 0px;
+    font-size: large;
+    text-align: left;
+	color: white;
+
+}
+
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 	font-weight: bold;
 }

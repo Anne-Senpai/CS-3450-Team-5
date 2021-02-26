@@ -11,18 +11,115 @@
 	<script src="https://kit.fontawesome.com/584d265fad.js" crossorigin="anonymous"></script>
 	<title>Verify Your Reservation</title>
 </head>
+<header>
+    <h1>Big Blue Parking Genie</h1>
+</header>
 <body>
-	<div class="container">
+	<div id="code_div" class="container">
 		<div class="row my-5 d-flex justify-content-center">
 			<div class="col-lg-5 my-auto">
 				<div class="card w-100 mt-5">
 					<h1 class="h4 card-header text-center">Verify Your Reservation</h1>
 					<div class="card-body">
-						<label class="pr-3" for="vCode">Verification Code: </label><input id="vCode" type="text" />
+						<label class="pr-3" for="vCode">Verification Code: </label><input id="vCode" type="text"/>
+						<button id="submit" class="btn btn-primary">Submit</button>
+						<p id="error" class="text-center" style="color: red" hidden>That reservation does not exist!</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="success" class="container" hidden>
+		<div class="row my-5 d-flex justify-content-center">
+			<div class="col-lg-5 my-auto">
+				<div class="card w-100 mt-5">
+					<h1 class="h4 card-header text-center">Verification Successful!</h1>
+					<div class="card-body">
+						<p class="text-center text-success my-3"><i class="far fa-check-circle fa-7x"><!--&nbsp;--></i></p>
+						        <p>Reservation #: <span id="res_num"></span></p>
+        						<p>Reservation Date: <span id="res_date"></span></p>
+        						<p>Reserved By: <span id="res_user"></span></p>
+        						<p>Parking Lot: <span id="res_lot"></span></p>
+        						<p>Parking Spot: <span id="res_spot"></span></p>
+								<a href="verification.html">Check another reservation</a>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </body>
+
+<script>
+	var res_num = document.getElementById("res_num");
+	var res_date = document.getElementById("res_date");
+	var res_user = document.getElementById("res_user");
+	var res_lot = document.getElementById("res_lot");
+	var res_spot = document.getElementById("res_spot");
+	var submit = document.getElementById("submit");
+	var vCode = document.getElementById("vCode");
+	var code_div = document.getElementById("code_div");
+	var success = document.getElementById("success");
+	var error = document.getElementById("error");
+
+	var reservations = [
+			{"code": 12345,
+			"date": new Date("March 1, 2021"),
+			"user": "Derek",
+			"lot": "Big Blue Parking Terrace",
+			"spot": "4"
+			},
+
+			{"code": 6789,
+			"date": new Date("April 1, 2021"),
+			"user": "Kate",
+			"lot": "Kate's Driveway",
+			"spot": "1"
+			},
+
+			{"code": 101112,
+			"date": new Date("May 1, 2021"),
+			"user": "Anne",
+			"lot": "Stadium Parking",
+			"spot": "25A"
+			},
+
+			{"code": 3145,
+			"date": new Date("June 1, 2021"),
+			"user": "Makalee",
+			"lot": "Little Green Parking Terrace",
+			"spot": "6"
+			}
+			]
+
+	submit.addEventListener("click", function (){
+		let res = reservations.filter( function(item){return (item.code === parseInt(vCode.value));});
+		if(res.length > 0){
+			res = res[0];
+			res_num.textContent = res["code"];
+			res_date.textContent = res['date'].toLocaleDateString();
+			res_user.textContent = res["user"];
+			res_lot.textContent = res["lot"];
+			res_spot.textContent = res["spot"];
+
+			code_div.hidden = true;
+			success.hidden = false;
+			error.hidden = true;
+		}
+		else{
+			code_div.hidden = false;
+			success.hidden = true;
+			error.hidden = false;
+		}
+
+	})
+
+vCode.addEventListener("keyup", function(event) {
+	if ((event.keyCode !== undefined && event.keyCode === 13) || (event.key !== undefined && event.key === "Enter")) {
+		event.preventDefault();
+		submit.click();
+	}
+});
+
+</script>
+
 </html>
