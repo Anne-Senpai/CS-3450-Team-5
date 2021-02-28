@@ -1,4 +1,9 @@
 # CS-3450-Team-5
+## Big Blue Parking Genie Web Application
+This project aims to build a web application for managing and selling parking for specific time slots.
+
+The system will allow a user to rent out a parking spot, specifying the specific time slot that they want to rent it. The user will be given a form of identification that can be given to allow entry to the parking zone. The system will also have a manager mode that will allow for seeing how much space is left, dealing with discrepancies, handling customer complaints, and overriding errors in the system, etc.
+
 ## Organization:
 
 - Docs - Contains use case UML's, Documentation of work and methodology, etc.\
@@ -17,13 +22,11 @@ The second number refers to the week that we are on for this milestone
 the third number refers to the update number that week.
 
 ex: 2.3.2 (milestone 2, week 3, update 2)
-
  
 ## Tool Stack:
 
-This team will be developing using Django, Python, HTML, and CSS. We will all
+This team will be developing using Django (a high-level Python web development framework), Python, HTML, and CSS. We will all
 have these set up on our personal computers for use.
-
 
 ## Build instructions:
 
