@@ -3,9 +3,11 @@ from django.contrib.auth.forms import UserCreationForm
 from genie.models import Event
 import datetime
 
+def index(request):
+    return render(request, 'genie/index.html')
+
 def sample(request):
     return render(request, 'genie/sample.html')
-
 
 def register(request):
     if request.method == "POST":
