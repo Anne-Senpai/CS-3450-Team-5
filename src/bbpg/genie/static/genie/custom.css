@@ -11,12 +11,12 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
 .bg-primary, .btn-primary {
 	background-color: #0F2439 !important;
-	border-color: #384660 !important;
+	border-color: #0F2439 !important;
 }
 
 .bg-info, .btn-info {
 	background-color: #226BAA !important;
-	border-color: #384660 !important;
+	border-color: #226BAA !important;
 }
 
 .text-primary {
