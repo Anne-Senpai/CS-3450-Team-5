@@ -21,5 +21,6 @@ def register(request):
     return render(request, "genie/register.html", {"form": form})
 
 def events(request):
-    events = Event.objects.get(startTime__gt=datetime.datetime.now())
-    return render(request, "genie/events.html", {"events": events})
+    events = Event.objects.filter(startTime__gt=datetime.datetime.now())
+    months = ["", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
+    return render(request, "genie/events.html", {"events": events, "months": months})
