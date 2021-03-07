@@ -1,0 +1,28 @@
+@import url("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css");
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+	font-weight: bold;
+}
+
+.bg-blue, .btn-blue {
+	background-color: #384660 !important;
+	border-color: #384660 !important;
+}
+
+.bg-primary, .btn-primary {
+	background-color: #0F2439 !important;
+	border-color: #384660 !important;
+}
+
+.bg-info, .btn-info {
+	background-color: #226BAA !important;
+	border-color: #384660 !important;
+}
+
+.text-primary {
+	color: #0F2439 !important;
+}
+
+.text-info {
+	color: #226BAA !important;
+}
