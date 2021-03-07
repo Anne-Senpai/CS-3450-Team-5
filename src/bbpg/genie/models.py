@@ -1,11 +1,9 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-
-class User(models.Model):
-    name = models.CharField(max_length=200)
-    email = models.CharField(max_length=200)
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     isManager = models.BooleanField()
-    password = models.CharField(max_length=200)
     balance = models.FloatField()
 
 
