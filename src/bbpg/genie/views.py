@@ -6,6 +6,9 @@ import datetime
 def index(request):
     return render(request, 'genie/index.html')
 
+def lots(request):
+    return render(request, 'genie/lots.html')
+
 def sample(request):
     return render(request, 'genie/sample.html')
 
