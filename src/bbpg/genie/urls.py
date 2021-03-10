@@ -6,5 +6,6 @@ app_name = 'genie'
 urlpatterns = [
     path('', views.index, name='index'),
     path("register/", views.register, name="register"),
+	path("lots/", views.lots, name="lots"),
     path("events/", views.events, name="events")
 ]
