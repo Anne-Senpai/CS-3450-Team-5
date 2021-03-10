@@ -13,6 +13,9 @@
                     {{ form|crispy }}
                     <button type="submit" class="btn btn-info">Register</button>
                 </form>
+                {% if user.is_authenticated %}
+                    <p>Welcome, {{ user.username }}! To continue, please <a href="genie/account.html">login.</a></p>
+                {% endif %}
             </div>
         </div>
     </div>

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from genie.models import Event
+from genie.forms import RegisterForm
 import datetime
 
 def index(request):
@@ -9,19 +10,22 @@ def index(request):
 def lots(request):
     return render(request, 'genie/lots.html')
 
+def reservation(request):
+    return render(request, 'genie/reservation.html')
+
 def sample(request):
     return render(request, 'genie/sample.html')
 
 def register(request):
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
+        form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
 
         return redirect("")
 
     else:
-        form = UserCreationForm()
+        form = RegisterForm()
 
     return render(request, "genie/register.html", {"form": form})
 

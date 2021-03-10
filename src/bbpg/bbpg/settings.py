@@ -123,3 +123,4 @@ STATIC_URL = '/static/'
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
+AUTH_USER_MODEL = 'auth.User'

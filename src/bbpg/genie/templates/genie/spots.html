@@ -1,0 +1,21 @@
+{% extends 'genie/base.html' %}
+{% load static %}
+{% block title %}Sample{% endblock %}
+{% block content %}
+
+    <h1>Some Freaking Awesome Spotz</h1>
+    <h2>Lot Info: ?</h2>
+    <div class="row">
+        <div class="col"><strong>Spot #</strong></div>
+        <div class="col"><strong>Tags</strong></div>
+        <div class="col"><strong>Make Reservation</strong></div>
+    </div>
+    <hr class="mt-0" />
+    <div class="row">
+        <div class="col">Spot 1</div>
+        <div class="col"><p><span class="badge badge-pill badge-success mr-2">Oversized Spots</span><span class="badge badge-pill badge-info mr-2">Tailgating</span></p></div>
+        <div class="col"><a href="#" class="btn btn-primary">Reserve</a></div>
+    </div>
+    <hr class="mt-0" />
+
+{% endblock %}
