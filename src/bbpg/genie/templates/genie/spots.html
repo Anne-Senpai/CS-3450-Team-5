@@ -3,19 +3,41 @@
 {% block title %}Sample{% endblock %}
 {% block content %}
 
-    <h1>Some Freaking Awesome Spotz</h1>
-    <h2>Lot Info: ?</h2>
-    <div class="row">
-        <div class="col"><strong>Spot #</strong></div>
-        <div class="col"><strong>Tags</strong></div>
-        <div class="col"><strong>Make Reservation</strong></div>
-    </div>
-    <hr class="mt-0" />
-    <div class="row">
-        <div class="col">Spot 1</div>
-        <div class="col"><p><span class="badge badge-pill badge-success mr-2">Oversized Spots</span><span class="badge badge-pill badge-info mr-2">Tailgating</span></p></div>
-        <div class="col"><a href="#" class="btn btn-primary">Reserve</a></div>
-    </div>
-    <hr class="mt-0" />
+<h1 class="mb-4">Available Spots</h1>
+
+<p class="lead font-weight-bolder mb-0">Cool Event Title</p>
+<p class="lead mb-1">4:00 pm - 5:00 pm | Event Location</p>
+<a class="" href="{% url 'genie:events' %}"><i class="fa-fw fas fa-arrow-left"></i> select a different event</a>
+
+<p class="lead font-weight-bolder mt-3 mb-0">Lot Title</p>
+<p class="lead mb-1">Lot address</p>
+<a class="" href="{% url 'genie:lots' %}"><i class="fa-fw fas fa-arrow-left"></i> select a different lot</a>
+
+<div class="row mt-5">
+	<div class="col"><p><strong>Spot #</strong></p></div>
+	<div class="col"><p><strong>Spot Type</strong></p></div>
+	<div class="col"><p class="pl-3"><strong>Make Reservation</strong></p></div>
+</div>
+<hr class="mt-0" />
+<div class="row">
+	<div class="col">Spot 1</div>
+	<div class="col justify-content-center">
+		<div>
+			<span class="badge badge-pill badge-info mr-2">Tailgating</span>
+		</div>
+	</div>
+	<div class="col">&nbsp;<a href="#" class="pt-0 btn btn-link">Reserve</a></div>
+</div>
+<hr class="mt-3" />
+<div class="row">
+	<div class="col">Spot 1</div>
+	<div class="col justify-content-center">
+		<div>
+			<span class="badge badge-pill badge-success mr-2">Motorcycle</span>
+		</div>
+	</div>
+	<div class="col">&nbsp;<a href="#" class="pt-0 btn btn-link">Reserve</a></div>
+</div>
+<hr class="mt-3" />
 
 {% endblock %}

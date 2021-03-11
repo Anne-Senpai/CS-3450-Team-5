@@ -10,6 +10,9 @@ def index(request):
 def lots(request):
     return render(request, 'genie/lots.html')
 
+def spots(request):
+    return render(request, 'genie/spots.html')
+
 def reservation(request):
     return render(request, 'genie/reservation.html')
 
