@@ -16,6 +16,9 @@ def spots(request):
 def reservation(request):
     return render(request, 'genie/reservation.html')
 
+def user(request):
+    return render(request, 'genie/user.html')
+
 def sample(request):
     return render(request, 'genie/sample.html')
 
