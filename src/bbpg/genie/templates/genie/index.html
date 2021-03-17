@@ -68,7 +68,7 @@
                     <p class="card-text"><strong>Remaining Balance: </strong> $<span id="balance">{{ user.profile.balance }}</span></p>
                     <a id="add_funds" class="btn btn-link" href="#"><i class="fas fa-plus"></i> Add Funds</a>
                     <form method="post" action="{% url 'genie:add_funds'%}" id="add_funds_form" hidden>
-                        <input type="number"/>
+                        <input id="funds_to_add" type="number"/>
                         <input type="submit" id="submit_add_funds" value="Add"/>
                         <button id="cancel_add_funds">Cancel</button>
                     </form>
@@ -81,12 +81,24 @@
         var add_funds_form = document.getElementById("add_funds_form");
         var submit_add_funds = document.getElementById("submit_add_funds");
         var cancel_add_funds = document.getElementById("cancel_add_funds");
+        var funds_to_add = document.getElementById("funds_to_add");
+        var balance = document.getElementById("balance");
 
         add_funds.addEventListener("click", function () {
             add_funds.hidden = true;
             add_funds_form.hidden = false;
         })
-
+        cancel_add_funds.addEventListener("click", function (){
+            add_funds.hidden = false;
+            add_funds_form.hidden = true;
+            funds_to_add.value = 0;
+        })
+        submit_add_funds.addEventListener("click", function () {
+            balance.value = balance.value + funds_to_add.value
+            add_funds.hidden = false;
+            add_funds_form.hidden = true;
+            funds_to_add.value = 0;
+        })
 
 
     </script>

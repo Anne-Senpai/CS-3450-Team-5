@@ -26,7 +26,7 @@ def populate_db(apps, schema_editor):
 
     event3.save()
 
-    content_type = ContentType.objects.get(model='user')
+    content_type = ContentType.objects.get_for_model(User)
 
     is_manager_permission = Permission(name="Is Manager", codename="is_manager", content_type=content_type)
 
