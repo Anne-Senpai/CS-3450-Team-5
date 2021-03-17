@@ -11,37 +11,44 @@
 	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 	<script src="https://kit.fontawesome.com/584d265fad.js" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-	<title>New Page</title>
+	<title>{% block title %}{% endblock %}</title>
 </head>
 <header>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 		<a class="navbar-brand h2 mb-sm-3 mx-4 p-0 pt-2" href="{% url 'genie:index' %}">
 			<img src="{% static 'genie/bbpg-white.PNG' %}" alt="Big Blue Parking Genie" style="width:100px;"/>
 		</a>
+        {% if user.is_authenticated %}
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
 				<!-- add active class to nav-item for current page? -->
-				<li class="nav-item mr-3">
+				<li class="nav-item mr-3 {% if request.get_full_path == "/" %}active{% endif %}">
 					<a class="nav-link" href="{% url 'genie:index' %}"><i class="fas fa-home fa-fw fa-sm"></i> Dashboard</a>
 				</li>
-				<li class="nav-item mr-3">
+				<li class="nav-item mr-3 {% if request.get_full_path == "/events/" %}active{% endif %}">
 					<a class="nav-link" href="{% url 'genie:events' %}">Events</a>
 				</li>
-				<li class="nav-item mr-3">
+				<li class="nav-item mr-3 {% if request.get_full_path == "/user/" %}active{% endif %}">
 					<a class="nav-link" href="{% url 'genie:user' %}">My Account</a>
 				</li>
 			</ul>
+            <ul class="navbar-nav ml-auto mr-3">
+                <a class="nav-link" style="color:rgba(255,255,255, 1);" href="{% url 'genie:logout' %}">Logout <i class="fas fa-sign-out-alt"></i></a>
+            </ul>
 		</div>
+        {% endif %}
 	</nav>
 </header>
 <body>
   <main>
-  <div class="container m-5">
-    {% block content %}
-    {% endblock %}
+  <div class="container-fluid">
+      <div class="m-5">
+        {% block content %}
+        {% endblock %}
+      </div>
   </div>
   </main>
 </body>

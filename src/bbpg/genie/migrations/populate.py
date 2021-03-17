@@ -2,18 +2,11 @@ from django.db import migrations
 from django.utils import timezone
 from django.utils.timezone import make_aware
 from django.contrib.contenttypes.models import ContentType
-import django.contrib.auth.models
+from django.contrib.auth.models import User, Permission
+from genie.models import Event, Profile, ParkingLot, LotArea, Reservation
 import datetime
 
 def populate_db(apps, schema_editor):
-    Event = apps.get_model("genie", "Event")
-    User = apps.get_model('auth', "User")
-    Permission = apps.get_model('auth', 'Permission')
-    ContentType = apps.get_model('contenttypes', 'ContentType')
-    Profile = apps.get_model("genie", "Profile")
-    ParkingLot = apps.get_model("genie", "ParkingLot")
-    ParkingSpot = apps.get_model("genie", "ParkingSpot")
-    Reservation = apps.get_model("genie", "Reservation")
 
     event1 = Event(name="Cool Event", description="This is a super cool event", address="123 Logan Street",
                    startTime=make_aware(datetime.datetime(month=6, day=26, year=2021, hour=18)),
@@ -42,21 +35,17 @@ def populate_db(apps, schema_editor):
     is_attendant_permission = Permission(name="Is Attendant", codename="is_attendant", content_type=content_type)
     is_attendant_permission.save()
 
-
-
-    user_user = User(first_name="User", last_name="User", password="user_user", username="user.user")
+    user_user = User.objects.create_user(first_name="User", last_name="User", password="user_user", username="user.user")
     user_user.save()
 
-    attendant_user = User(first_name="Attendant", last_name="User", password="attendant_user", username="attendant.user")
+    attendant_user = User.objects.create_user(first_name="Attendant", last_name="User", password="attendant_user", username="attendant.user")
     attendant_user.save()
 
-    manager_user = User(first_name="manager", last_name="User", password="manager_user", username="manager.user")
+    manager_user = User.objects.create_user(first_name="manager", last_name="User", password="manager_user", username="manager.user")
     manager_user.save()
 
     attendant_user.user_permissions.add(is_attendant_permission)
     manager_user.user_permissions.add(is_manager_permission)
-
-
 
     user_profile = Profile(user=user_user, balance=100)
     user_profile.save()
@@ -66,7 +55,6 @@ def populate_db(apps, schema_editor):
 
     manager_profile = Profile(user=manager_user, balance=1000)
     manager_profile.save()
-
 
     lot1 = ParkingLot(name="Green Lot", address="678 Green Street", owner=manager_user)
     lot1.save()
@@ -83,27 +71,23 @@ def populate_db(apps, schema_editor):
 
     event3.parkingLots.add(lot1, lot3)
 
-
-
     for lot in [lot1, lot2, lot3]:
-        for i in range(10):
-            spot = ParkingSpot(parkingLot=lot, price=i/2 + 1, type="Standard")
-            spot.save()
+        for i in range(5):
+            area = LotArea(parkingLot=lot, price=i/2 + 1, type="Standard", areaIdentifier=str(i), capacity=2*i)
+            area.save()
 
-    spot1 = ParkingSpot(parkingLot=lot1, price=3.75, type="Tailgate")
-    spot1.save()
-    spot2 = ParkingSpot(parkingLot=lot2, price=5.25, type="Oversize")
-    spot2.save()
-    spot3 = ParkingSpot(parkingLot=lot3, price=2.00, type="Standard")
-    spot3.save()
+    area1 = LotArea(parkingLot=lot1, price=3.75, type="Tailgate", areaIdentifier="A", capacity=15)
+    area1.save()
+    area2 = LotArea(parkingLot=lot2, price=5.25, type="Oversize", areaIdentifier="B", capacity=20)
+    area2.save()
+    area3 = LotArea(parkingLot=lot3, price=2.00, type="Standard", areaIdentifier="C", capacity=10)
+    area3.save()
 
-
-
-    res1 = Reservation(code="L5G742SD45", event=event1, parkingSpot=spot1, user=user_user)
+    res1 = Reservation(code="L5G742SD45", event=event1, lotArea=area1, user=user_user)
     res1.save()
-    res2 = Reservation(code="H462D6T9W3", event=event2, parkingSpot=spot2, user=user_user)
+    res2 = Reservation(code="H462D6T9W3", event=event2, lotArea=area2, user=user_user)
     res2.save()
-    res3 = Reservation(code="R794GH7123", event=event3, parkingSpot=spot3, user=user_user)
+    res3 = Reservation(code="R794GH7123", event=event3, lotArea=area3, user=user_user)
     res3.save()
 
 class Migration(migrations.Migration):

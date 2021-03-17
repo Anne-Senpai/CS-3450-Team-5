@@ -1,62 +1,94 @@
 {% extends 'genie/base.html' %}
 {% load static %}
-{% block title %}Sample{% endblock %}
+{% block title %}Dashboard{% endblock %}
 {% block content %}
 
-<h1>User Dashboard</h1>
-<p class="lead">Welcome, Person's Name!</p>
+    <h1>User Dashboard</h1>
+    <p class="lead">Welcome, {{ user.username }}!</p>
+    <div class="row">
+        <div class="col-lg-8">
+            <h2 class="mb-3 mt-5">Your Reservations <a href="{% url 'genie:events' %}" class="p mx-3 btn btn-primary"><i
+                    class="fa-fw fas fa-plus"></i>
+                New Reservation</a></h2>
+
+            <table class="table table-striped">
+                <tr>
+                    <th>Date</th>
+                    <th>Lot</th>
+                    <th>Area</th>
+                    <th>Address</th>
+                    <th></th>
+                </tr>
+                {% for reservation in reservations %}
+                    <tr>
+                        <td>{{ reservation.event.startTime|date:'M d Y h:i A' }}</td>
+                        <td>{{ reservation.lotArea.parkingLot.name }}</td>
+                        <td>{{ reservation.lotArea.areaIdentifier }}</td>
+                        <td>{{ reservation.lotArea.parkingLot.address }}</td>
+                        <td><a href="#" class="btn btn-link">Edit Reservation</a></td>
+                    </tr>
+
+                {% endfor %}
+            </table>
+
+            <h2 class="mb-3 mt-5">Your Posted Lots <a href="#" class="p mx-3 btn btn-primary"><i
+                    class="fa-fw fas fa-plus"></i>
+                Post New Lot</a></h2>
+
+            <table class="table table-striped">
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th width="40%">Events</th>
+                </tr>
+                {% for lot in lots %}
+                    <tr>
+                        <td>{{ lot.name }}</td>
+                        <td>{{ lot.address }}</td>
+                        <td>
+                            <span>{{ lot.event_set.all|length }}</span><a class="link-secondary text-decoration-none"
+                                                                          data-toggle="collapse"
+                                                                          href="#eventItems{{ lot.pk }}">
+                            <i class="fas fa-angle-down text-gray"></i></a>
+                            <div id="eventItems{{ lot.pk }}" class="collapse">
+                                {% for event in lot.event_set.all %}
+                                    {{ event.name }} | {{ event.startTime|date:'M d Y h:i A' }}<br>
+                                {% endfor %}
+                            </div>
+
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col-lg-4">
+            <div class="card my-3 w-100">
+                <div class="card-body">
+                    <h2 class="h3 text-primary">Account Balance</h2>
+                    <p class="card-text"><strong>Remaining Balance: </strong> $<span id="balance">{{ user.profile.balance }}</span></p>
+                    <a id="add_funds" class="btn btn-link" href="#"><i class="fas fa-plus"></i> Add Funds</a>
+                    <form method="post" action="{% url 'genie:add_funds'%}" id="add_funds_form" hidden>
+                        <input type="number"/>
+                        <input type="submit" id="submit_add_funds" value="Add"/>
+                        <button id="cancel_add_funds">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var add_funds = document.getElementById("add_funds");
+        var add_funds_form = document.getElementById("add_funds_form");
+        var submit_add_funds = document.getElementById("submit_add_funds");
+        var cancel_add_funds = document.getElementById("cancel_add_funds");
+
+        add_funds.addEventListener("click", function () {
+            add_funds.hidden = true;
+            add_funds_form.hidden = false;
+        })
 
 
-<h2 class="mb-3 mt-5">Your Reservations <a href="#" class="p mx-3 btn btn-primary"><i class="fa-fw fas fa-plus"></i> New Reservation</a></h2>
 
-<table class="table table-striped">
-    <tr>
-        <th>Date</th>
-        <th>Lot</th>
-        <th>Space</th>
-        <th>Address?</th>
-		<th></th>
-    </tr>
-    <tr>
-        <td>February 5</td>
-        <td>Aggie Terrace</td>
-        <td>#53</td>
-        <td>600 N 700 E, Logan, UT</td>
-        <td><a href="#" class="btn btn-link">Edit Reservation</a></td>
-    </tr>
-	<tr>
-        <td>March 8</td>
-        <td>Aggie Terrace</td>
-        <td>#76</td>
-        <td>600 N 700 E, Logan, UT</td>
-        <td><a href="#" class="btn btn-link">Edit Reservation</a></td>
-    </tr>
-</table>
-
-<h2 class="mb-3 mt-5">Your Posted Spaces <a href="#" class="p mx-3 btn btn-primary"><i class="fa-fw fas fa-plus"></i> Post New Space</a></h2>
-
-<table class="table table-striped">
-    <tr>
-        <th>Date</th>
-        <th>Lot</th>
-        <th>Space</th>
-        <th>Address?</th>
-		<th></th>
-    </tr>
-    <tr>
-        <td>February 5</td>
-        <td>Aggie Terrace</td>
-        <td>#53</td>
-        <td>600 N 700 E, Logan, UT</td>
-        <td><a href="#" class="btn btn-link">Edit Space</a></td>
-    </tr>
-	<tr>
-        <td>March 8</td>
-        <td>Aggie Terrace</td>
-        <td>#76</td>
-        <td>600 N 700 E, Logan, UT</td>
-        <td><a href="#" class="btn btn-link">Edit Space</a></td>
-    </tr>
-</table>
+    </script>
 
 {% endblock %}

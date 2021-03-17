@@ -21,15 +21,17 @@ class Event(models.Model):
     parkingLots = models.ManyToManyField(ParkingLot)
 
 
-class ParkingSpot(models.Model):
+class LotArea(models.Model):
+    areaIdentifier = models.CharField(max_length=200)
     parkingLot = models.ForeignKey(ParkingLot, on_delete=models.CASCADE)
     price = models.FloatField()
     type = models.CharField(max_length=200)
+    capacity = models.IntegerField()
 
 
 class Reservation(models.Model):
     code = models.CharField(max_length=200)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
-    parkingSpot = models.ForeignKey(ParkingSpot, on_delete=models.CASCADE)
+    lotArea = models.ForeignKey(LotArea, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 

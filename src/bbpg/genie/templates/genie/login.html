@@ -1,0 +1,22 @@
+{% extends 'genie/base.html' %}
+{% load static %}
+{% block title %}Login{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-5">
+        <div class="card mt-5">
+            <div class="card-body">
+				<h1 class="h3 mb-3">Login</h1>
+
+                    <form method="POST">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                        Don't have an account? <a href="{% url "genie:register" %}" target="blank"><strong>register here</strong></a><br/><br/>
+                        <button class="btn btn-info" type="submit">Login</button>
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
