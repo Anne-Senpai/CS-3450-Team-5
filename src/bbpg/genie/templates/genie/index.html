@@ -5,12 +5,18 @@
 
     <h1>User Dashboard</h1>
     <p class="lead">Welcome, {{ user.username }}!</p>
+	<h2>Account Balance</h2>
+	<p class="card-text"><strong>Remaining Balance: </strong> $<span id="balance">{{ user.profile.balance }}</span></p>
+	<a id="add_funds" class="btn btn-link" href="#"><i class="fas fa-plus"></i> Add Funds</a>
+	<form method="post" action="{% url 'genie:add_funds'%}" id="add_funds_form" hidden>
+		{% csrf_token %}
+		<input id="funds_to_add" name="funds_to_add" type="number" step=".01"/>
+		<input class="btn btn-success py-1" type="submit" id="submit_add_funds" value="Add"/>
+		<button class="btn btn-danger py-1" id="cancel_add_funds">Cancel</button>
+	</form>
     <div class="row">
-        <div class="col-lg-8">
-            <h2 class="mb-3 mt-5">Your Reservations <a href="{% url 'genie:events' %}" class="p mx-3 btn btn-primary"><i
-                    class="fa-fw fas fa-plus"></i>
-                New Reservation</a></h2>
-
+        <div class="col-lg-9">
+            <h2 class="mb-3 mt-5">Your Reservations <a href="{% url 'genie:events' %}" class="p mx-3 btn btn-primary"><i class="fa-fw fas fa-plus"></i>New Reservation</a></h2>
             <table class="table table-striped">
                 <tr>
                     <th>Date</th>
@@ -60,21 +66,6 @@
                     </tr>
                 {% endfor %}
             </table>
-        </div>
-        <div class="col-lg-4">
-            <div class="card my-3 w-100">
-                <div class="card-body">
-                    <h2 class="h3 text-primary">Account Balance</h2>
-                    <p class="card-text"><strong>Remaining Balance: </strong> $<span id="balance">{{ user.profile.balance }}</span></p>
-                    <a id="add_funds" class="btn btn-link" href="#"><i class="fas fa-plus"></i> Add Funds</a>
-                    <form method="post" action="{% url 'genie:add_funds'%}" id="add_funds_form" hidden>
-                        {% csrf_token %}
-                        <input id="funds_to_add" name="funds_to_add" type="number" step=".01"/>
-                        <input type="submit" id="submit_add_funds" value="Add"/>
-                        <button id="cancel_add_funds">Cancel</button>
-                    </form>
-                </div>
-            </div>
         </div>
     </div>
     <script>
