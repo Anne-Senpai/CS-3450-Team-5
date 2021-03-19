@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from genie.models import Event, Reservation, ParkingLot
@@ -25,22 +26,29 @@ def index(request):
 def lots(request):
     params = request.GET
     event = int(unquote(params['event']))
-    return render(request, 'genie/lots.html')
+    event_obj = Event.objects.get(pk=event)
+    lts = ParkingLot.objects.filter(event=event_obj)
+    return render(request, 'genie/lots.html', {"lts": lts})
+
 
 @login_required
 def spots(request):
     return render(request, 'genie/spots.html')
 
+
 @login_required
 def reservation(request):
     return render(request, 'genie/reservation.html')
+
 
 @login_required
 def user(request):
     return render(request, 'genie/user.html')
 
+
 def sample(request):
     return render(request, 'genie/sample.html')
+
 
 def register(request):
     if request.method == 'POST':
@@ -58,9 +66,11 @@ def register(request):
 
     return render(request, "genie/register.html", {"form": form})
 
+
 def events(request):
-    events = Event.objects.filter(startTime__gt=datetime.datetime.now())
-    return render(request, "genie/events.html", {"events": events})
+    evts = Event.objects.filter(startTime__gt=datetime.datetime.now())
+    return render(request, "genie/events.html", {"events": evts})
+
 
 @login_required
 def profile(request):
@@ -70,3 +80,11 @@ def profile(request):
 def logout(request):
     auth_logout(request)
     return redirect("genie:login_view")
+
+
+def add_funds(request):
+    profile = request.user.profile
+    funds = float(request.POST["funds_to_add"])
+    profile.balance = profile.balance + funds
+    profile.save()
+    return redirect("genie:index")
