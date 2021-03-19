@@ -28,7 +28,7 @@ def lots(request):
     event = int(unquote(params['event']))
     event_obj = Event.objects.get(pk=event)
     lts = ParkingLot.objects.filter(event=event_obj)
-    return render(request, 'genie/lots.html', {"lts": lts})
+    return render(request, 'genie/lots.html', {"lots": lts, "event": event_obj})
 
 
 @login_required

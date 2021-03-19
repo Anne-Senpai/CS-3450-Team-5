@@ -11,6 +11,22 @@ class ParkingLot(models.Model):
     address = models.CharField(max_length=200)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    def get_types(self):
+        types = []
+        lot_areas = self.lotarea_set.all()
+        for area in lot_areas:
+            if area.type not in types:
+                types.append(area.type)
+
+        return types
+
+    def get_num_spots(self):
+        num_spots = 0
+        lot_areas = self.lotarea_set.all()
+        for area in lot_areas:
+            num_spots += area.capacity
+
+        return num_spots
 
 class Event(models.Model):
     startTime = models.DateTimeField('Start Time')
@@ -19,6 +35,7 @@ class Event(models.Model):
     description = models.CharField(max_length=200)
     address = models.CharField(max_length=200)
     parkingLots = models.ManyToManyField(ParkingLot)
+
 
 
 class LotArea(models.Model):

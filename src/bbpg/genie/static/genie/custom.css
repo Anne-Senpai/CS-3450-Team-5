@@ -40,3 +40,20 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 	transform: scale(1.03);
 	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
+
+.pill-1 {
+	background-color: #226BAA !important;
+}
+
+.pill-2 {
+	background-color: #5cb85c !important;
+}
+
+.pill-3 {
+	background-color: #f0ad4e !important;
+}
+
+.pill-4 {
+	background-color: #d9534f !important;
+}
+
