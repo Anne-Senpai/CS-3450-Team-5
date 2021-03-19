@@ -45,6 +45,9 @@ class LotArea(models.Model):
     type = models.CharField(max_length=200)
     capacity = models.IntegerField()
 
+    def num_spots_available(self, event):
+        reservations = self.reservation_set.filter(event=event)
+        return self.capacity - len(reservations)
 
 class Reservation(models.Model):
     code = models.CharField(max_length=200)

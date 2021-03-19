@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from genie.models import Event, Reservation, ParkingLot
+from genie.models import Event, Reservation, ParkingLot, LotArea
 from genie.forms import RegisterForm
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
@@ -25,15 +25,32 @@ def index(request):
 @login_required
 def lots(request):
     params = request.GET
-    event = int(unquote(params['event']))
-    event_obj = Event.objects.get(pk=event)
-    lts = ParkingLot.objects.filter(event=event_obj)
-    return render(request, 'genie/lots.html', {"lots": lts, "event": event_obj})
+    if 'event' in params:
+        event = int(unquote(params['event']))
+        event_obj = Event.objects.get(pk=event)
+        lts = ParkingLot.objects.filter(event=event_obj)
+        return render(request, 'genie/lots.html', {"lots": lts, "event": event_obj})
+
+    else:
+        return redirect("genie:events")
 
 
 @login_required
 def spots(request):
-    return render(request, 'genie/spots.html')
+    params = request.GET
+    if 'event' in params and 'lot' in params:
+        event = int(unquote(params['event']))
+        event_obj = Event.objects.get(pk=event)
+        lot = int(unquote(params['lot']))
+        lot_obj = ParkingLot.objects.get(pk=lot)
+        area_avail_map = []
+        areas = LotArea.objects.filter(parkingLot=lot_obj)
+        for area in areas:
+            area_avail_map.append([area, area.num_spots_available(event_obj)])
+        return render(request, 'genie/spots.html', {"event": event_obj, "lot": lot_obj, "areas": area_avail_map})
+
+    else:
+        return redirect("genie:events")
 
 
 @login_required
