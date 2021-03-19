@@ -16,7 +16,7 @@
 </head>
 <header>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-		<a class="navbar-brand h2 mb-sm-3 mx-4 p-0 pt-2" href="{% url 'genie:index' %}">
+		<a class="navbar-brand h2 mb-3 mb-md-0 mx-4 py-2" href="{% url 'genie:index' %}">
 			<img src="{% static 'genie/logo-01.png' %}" alt="Big Blue Parking Genie" style="width:150px;"/>
 		</a>
         {% if user.is_authenticated %}
@@ -24,8 +24,7 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<ul class="navbar-nav mr-auto">
-				<!-- add active class to nav-item for current page? -->
+			<ul class="navbar-nav mr-auto m-0">
 				<li class="nav-item mr-3 {% if request.get_full_path == "/" %}active{% endif %}">
 					<a class="nav-link" href="{% url 'genie:index' %}"><i class="fas fa-home fa-fw fa-sm"></i> Dashboard</a>
 				</li>
