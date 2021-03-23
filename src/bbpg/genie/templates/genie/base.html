@@ -2,7 +2,7 @@
 <html lang="en">
 {% load static %}
 <head>
-    <link rel="shortcut icon" type="image/png" href="{% static 'genie/favicon.png' %}"/>
+	<link rel="shortcut icon" type="image/png" href="{% static 'genie/favicon.png' %}"/>
 	<!-- Required meta tags -->
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -19,7 +19,7 @@
 		<a class="navbar-brand h2 mb-3 mb-md-0 mx-4 py-2" href="{% url 'genie:index' %}">
 			<img src="{% static 'genie/logo-01.png' %}" alt="Big Blue Parking Genie" style="width:150px;"/>
 		</a>
-        {% if user.is_authenticated %}
+		{% if user.is_authenticated %}
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -31,25 +31,25 @@
 				<li class="nav-item mr-3 {% if request.get_full_path == "/events/" %}active{% endif %}">
 					<a class="nav-link" href="{% url 'genie:events' %}">Events</a>
 				</li>
-{#				<li class="nav-item mr-3 {% if request.get_full_path == "/user/" %}active{% endif %}">#}
-{#					<a class="nav-link" href="{% url 'genie:user' %}">My Account</a>#}
-{#				</li>#}
-			</ul>
-            <ul class="navbar-nav ml-auto mr-3">
-                <a class="nav-link" style="color:rgba(255,255,255, 1);" href="{% url 'genie:logout' %}">Logout <i class="fas fa-sign-out-alt"></i></a>
-            </ul>
-		</div>
-        {% endif %}
-	</nav>
-</header>
-<body>
-  <main>
-  <div class="container-fluid">
-      <div class="m-5">
-        {% block content %}
-        {% endblock %}
-      </div>
-  </div>
-  </main>
-</body>
-</html>
+				{#				<li class="nav-item mr-3 {% if request.get_full_path == "/user/" %}active{% endif %}">#}
+					{#					<a class="nav-link" href="{% url 'genie:user' %}">My Account</a>#}
+					{#				</li>#}
+				</ul>
+				<ul class="navbar-nav ml-auto mr-3">
+					<a class="nav-link" style="color:rgba(255,255,255, 1);" href="{% url 'genie:logout' %}">Logout <i class="fas fa-sign-out-alt"></i></a>
+				</ul>
+			</div>
+			{% endif %}
+		</nav>
+	</header>
+	<body>
+		<main>
+			<div class="container-fluid m-0 p-0">
+				{% if user.is_authenticated %}<div class="m-5">{% else %}<div class="m-0">{% endif %}
+					{% block content %}
+					{% endblock %}
+				</div>
+			</div>
+		</main>
+	</body>
+	</html>

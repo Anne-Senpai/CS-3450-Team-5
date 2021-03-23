@@ -57,3 +57,6 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 	background-color: #d9534f !important;
 }
 
+.snazzy-bg {
+	background: repeat url("{% static 'genie/snazzy-background.png' %}");
+}
