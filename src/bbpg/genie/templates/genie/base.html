@@ -55,73 +55,38 @@
 		</main>
 	</body>
 	{% if user.is_authenticated %}
-	<footer class="bg-blue text-white text-center text-lg-start">
-		<!-- Grid container -->
-		<div class="container p-0 m-0">
+	<footer class="w-100 bg-blue text-white text-center text-lg-start">
+		<div class="container-fluid w-100 p-0 m-0">
 
-			<!--Grid row-->
-			<div class="row pl-0">
-				<div class="col-3 m-0 p-0">
-					<img class="position-left float-left ml-0" height="250px;" src="{% static 'genie/footer_left.png' %}" />
+			<div class="w-100 d-flex flex-row justify-content-between">
+				<div>
+					<img class="float-left ml-0" height="250px;" src="{% static 'genie/footer_left.png' %}" />
 				</div>
 
-				<!--Grid column-->
-				<div class="col-3 mb-4 mb-md-0 mt-5">
-					<h5 class="text-uppercase">Links</h5>
-
-					<ul class="list-unstyled mb-0 mt-5">
-						<li>
-							<a href="#!" class="text-dark">Link 1</a>
-						</li>
-						<li>
-							<a href="#!" class="text-dark">Link 2</a>
-						</li>
-						<li>
-							<a href="#!" class="text-dark">Link 3</a>
-						</li>
-						<li>
-							<a href="#!" class="text-dark">Link 4</a>
-						</li>
-					</ul>
+				<div class="mb-4 mb-md-0 mt-5">
+					<h5 class="text-left text-uppercase">Contact Information</h5>
+					<p class="text-left mb-2">34 USU Street<br />Logan, UT 88888</p>
+					<p class="text-left mb-2"><i class="fas fa-phone fa-fw fa-sm"></i> (111)111-1111</p>
+					<p class="text-left"><i class="fas fa-envelope fa-fw fa-sm"></i> <a href="#">teamArthur@email.com</a></p>
 				</div>
-				<!--Grid column-->
 
-				<!--Grid column-->
-				<div class="col-3  mb-4 mb-md-0 mt-5">
-					<h5 class="text-uppercase mb-0">Links</h5>
+				<div class="mb-4 mb-md-0 mt-5">
+					<h5 class="text-left text-uppercase">About Us</h5>
+					<p class="text-left mb-2">Group 5 (Team Arthur)</p>
+					<p class="text-left mb-2">Makalee<br />Derek<br />Anne<br />Kate</p>
 
-					<ul class="list-unstyled mt-5">
-						<li>
-							<a href="#!" class="text-dark">Link 1</a>
-						</li>
-						<li>
-							<a href="#!" class="text-dark">Link 2</a>
-						</li>
-						<li>
-							<a href="#!" class="text-dark">Link 3</a>
-						</li>
-						<li>
-							<a href="#!" class="text-dark">Link 4</a>
-						</li>
-					</ul>
 				</div>
-				<!--Grid column-->
 
-				<div class="col-3 float-right m-0 p-0">
-					<img class="position-right float-right" style="margin-top: -100px;" src="{% static 'genie/footer_right.png' %}" />
+				<div>
+					<img class="float-right mr-5" style="margin-top: -100px;" src="{% static 'genie/footer_right.png' %}" />
 				</div>
 			</div>
-			<!--Grid row-->
 		</div>
-		<!-- Grid container -->
 
-		<!-- Copyright -->
 		<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
 			Special Thanks to Arthur (include circle pic of Arthur)
 		</div>
-		<!-- Copyright -->
 	</footer>
-	<!-- Footer -->
 	{% endif %}
 
 
