@@ -1,9 +1,22 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     balance = models.FloatField()
+
+    def is_manager(self):
+        perm = Permission.objects.get(codename="is_manager")
+        return perm in self.user.user_permissions.all()
+
+    def is_supervisor(self):
+        perm = Permission.objects.get(codename="is_supervisor")
+        return perm in self.user.user_permissions.all()
+
+    def is_attendant(self):
+        perm = Permission.objects.get(codename="is_attendant")
+        return perm in self.user.user_permissions.all()
 
 
 class ParkingLot(models.Model):

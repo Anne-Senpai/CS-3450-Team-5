@@ -4,7 +4,7 @@
 {% block content %}
 
     <h1>User Dashboard</h1>
-    <p class="lead">Welcome, {{ user.username }}!</p>
+    <p class="lead">Welcome, {{ user.username}}!</p>
 	<h2 class="h3 mt-5">Account Balance</h2>
 	<p class="card-text"><strong>Remaining Balance: </strong> $<span id="balance">{{ user.profile.balance }}</span></p>
 	<a id="add_funds" class="btn btn-link" href="#"><i class="fas fa-plus"></i> Add Funds</a>
@@ -36,7 +36,7 @@
 
                 {% endfor %}
             </table>
-
+            {% if user.profile.is_manager or user.profile.is_supervisor %}
             <h2 class="mb-3 mt-5">Your Posted Lots <a href="#" class="p mx-3 btn btn-primary"><i
                     class="fa-fw fas fa-plus"></i>
                 Post New Lot</a></h2>
@@ -60,12 +60,13 @@
                                 {% for event in lot.event_set.all %}
                                     {{ event.name }} | {{ event.startTime|date:'M d Y h:i A' }}<br>
                                 {% endfor %}
+                            <a class="btn btn-link" href="{% url 'genie:assign_events' %}?lot={{ lot.pk }}"><i class="fas fa-plus"></i> Assign Event</a>
                             </div>
-
                         </td>
                     </tr>
                 {% endfor %}
             </table>
+            {% endif %}
         </div>
     </div>
     <script>

@@ -28,8 +28,10 @@ def populate_db(apps, schema_editor):
 
     content_type = ContentType.objects.get_for_model(User)
 
-    is_manager_permission = Permission(name="Is Manager", codename="is_manager", content_type=content_type)
+    is_supervisor_permission = Permission(name="Is Supervisor", codename="is_supervisor", content_type=content_type)
+    is_supervisor_permission.save()
 
+    is_manager_permission = Permission(name="Is Manager", codename="is_manager", content_type=content_type)
     is_manager_permission.save()
 
     is_attendant_permission = Permission(name="Is Attendant", codename="is_attendant", content_type=content_type)
@@ -41,11 +43,15 @@ def populate_db(apps, schema_editor):
     attendant_user = User.objects.create_user(first_name="Attendant", last_name="User", password="attendant_user", username="attendant.user")
     attendant_user.save()
 
-    manager_user = User.objects.create_user(first_name="manager", last_name="User", password="manager_user", username="manager.user")
+    manager_user = User.objects.create_user(first_name="Manager", last_name="User", password="manager_user", username="manager.user")
     manager_user.save()
+
+    supervisor_user = User.objects.create_user(first_name="Supervisor", last_name="User", password="supervisor_user", username="supervisor.user")
+    supervisor_user.save()
 
     attendant_user.user_permissions.add(is_attendant_permission)
     manager_user.user_permissions.add(is_manager_permission)
+    supervisor_user.user_permissions.add(is_supervisor_permission)
 
     user_profile = Profile(user=user_user, balance=100)
     user_profile.save()
@@ -55,6 +61,9 @@ def populate_db(apps, schema_editor):
 
     manager_profile = Profile(user=manager_user, balance=1000)
     manager_profile.save()
+
+    supervisor_profile = Profile(user=supervisor_user, balance=1000000)
+    supervisor_profile.save()
 
     lot1 = ParkingLot(name="Green Lot", address="678 Green Street", owner=manager_user)
     lot1.save()

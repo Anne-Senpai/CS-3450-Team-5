@@ -31,9 +31,11 @@
 				<li class="nav-item mr-3 {% if request.get_full_path == "/events/" %}active{% endif %}">
 					<a class="nav-link" href="{% url 'genie:events' %}">Events</a>
 				</li>
-				{#				<li class="nav-item mr-3 {% if request.get_full_path == "/user/" %}active{% endif %}">#}
-					{#					<a class="nav-link" href="{% url 'genie:user' %}">My Account</a>#}
-					{#				</li>#}
+                {% if user.profile.is_supervisor %}
+                <li class="nav-item mr-3 {% if request.get_full_path == "/user/" %}active{% endif %}">
+				    <a class="nav-link" href="{% url 'genie:user' %}">User</a>
+				</li>
+                {% endif %}
 				</ul>
 				<ul class="navbar-nav ml-auto mr-3">
 					<a class="nav-link" style="color:rgba(255,255,255, 1);" href="{% url 'genie:logout' %}">Logout <i class="fas fa-sign-out-alt"></i></a>
@@ -121,4 +123,5 @@
 	</footer>
 	<!-- Footer -->
 	{% endif %}
-	</html>
+
+

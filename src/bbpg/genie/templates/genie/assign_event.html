@@ -1,12 +1,14 @@
-
 {% extends 'genie/base.html' %}
 {% load static %}
-{% block title %}Upcoming Events{% endblock %}
+{% block title %}Assign Events{% endblock %}
 {% block content %}
-<h1>Upcoming Events</h1>
-<p class="lead">Select from the events listed below to find and reserve a parking space.</p>
-{% for event in events %}
-    <div class="media d-flex align-items-center mt-2 mt-lg-0 mb-3">
+{% csrf_token %}
+
+    <h1>Edit Assigned Events</h1>
+    <p class="lead"><strong>Lot:</strong> {{ lot.name }}</p>
+    <a class="" href="{% url 'genie:index' %}"><i class="fa-fw fas fa-arrow-left"></i> return to dashboard</a>
+    {% for event in events %}
+    <div class="media d-flex align-items-center mt-5 mt-lg-0 mb-3">
         <div class="mr-3 bg-info p-3 px-4 text-center text-white" style="width: 125px;">
             <div class="p-0 m-0 h1 line-height-base text-white">{{ event.startTime|date:'d'}}
                 <div class="p-0 m-0 h5 line-height-base text-white text-uppercase"><small>{{ event.startTime|date:'M' }} {{ event.startTime|date:'Y' }}</small></div></div>
@@ -17,7 +19,19 @@
             </h3>
             <p class="m-0">{{ event.startTime|date:'D' }} | <strong>at {{ event.startTime|date:'h:i A'}}</strong></p>
             <p class="m-0"><i class="fas fa-map-marker-alt fa-fw fa-sm text-primary">&nbsp;</i>{{ event.address }}</p>
+            <p class="m-0">Assign Lot: <input class="toggle-switch" type="checkbox" {% if lot in event.parkingLots.all%}checked{% endif %} id="flexSwitch" data-event_id="{{ event.pk }}" onclick="assign_event(this)"/></p>
         </div>
     </div>
-{% endfor %}
+    {% endfor %}
+
+
+    <script>
+        var lot_id = {{ lot.pk }}
+
+        var assign_event = function(toggle) {
+            console.log(toggle)
+            return fetch("/assign_events/assign_event/?lot=" + lot_id + "&event=" + toggle.dataset.event_id)
+        }
+
+    </script>
 {% endblock %}

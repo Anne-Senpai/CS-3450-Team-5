@@ -2,25 +2,39 @@
 {% load static %}
 {% block title %}Account Details{% endblock %}
 {% block content %}
-
-<div class="row justify-content-center">
-	<div class="col-lg-6">
-		<div class="card my-3 w-100">
-			<div class="card-body">
-				<h2 class="h3 text-primary">Account Details</h2>
-				<p class="m-0"><strong>Username: </strong>{{ user.username }}</p>
-				<p class="m-0"><strong>Email: </strong>{{ user.email }}</p>
-				<a class="btn btn-link mt-3" href="#"><i class="fas fa-pencil-alt"></i> Edit</a>
-			</div>
-			<ul class="list-group list-group-flush">
-				<li class="list-group-item">
-					<h3 class="h5 mt-2 text-primary">Account Balance</h3>
-					<p class="card-text"><strong>Remaining Balance: </strong>${{ user.profile.balance }}</p>
-					<a class="btn btn-link" href="#"><i class="fas fa-plus"></i> Add Funds</a>
-				</li>
-			</ul>
-		</div>
+<div class="row mb-5">
+	<div class="col-lg-9">
+		<h2 class="mb-3 mt-5">Users</h2>
+		<table class="table table-striped mb-5">
+			<tr>
+				<th>Username</th>
+				<th>Permissions</th>
+				<th>Balance</th>
+				<th>Assigned Lots</th>
+			</tr>
+			<tr>
+				<td>user.user</td>
+				<td>
+					<div class="form-check-inline">
+						<label class="form-check-label">
+							<input type="checkbox" class="form-check-input" value="">Manager
+						</label>
+					</div>
+					<div class="form-check-inline">
+						<label class="form-check-label">
+							<input type="checkbox" class="form-check-input" value="">Attendant
+						</label>
+					</div>
+					<div class="form-check-inline">
+						<label class="form-check-label">
+							<input type="checkbox" class="form-check-input" value="">Supervisor
+						</label>
+					</div>
+				</td>
+				<td>$45</td>
+				<td>7</td>
+			</tr>
+		</table>
 	</div>
 </div>
-
 {% endblock %}

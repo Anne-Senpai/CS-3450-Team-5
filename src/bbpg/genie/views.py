@@ -105,3 +105,29 @@ def add_funds(request):
     profile.balance = profile.balance + funds
     profile.save()
     return redirect("genie:index")
+
+
+def assign_events(request):
+    params = request.GET
+    if "lot" in params:
+        lot_id = int(unquote(params["lot"]))
+        lot = ParkingLot.objects.get(pk=lot_id)
+        evts = Event.objects.filter(startTime__gt=datetime.datetime.now())
+        return render(request, "genie/assign_event.html", {"events": evts, "lot": lot})
+
+
+def assign_event(request):
+    params = request.GET
+    res = {"success": False}
+    if "event" in params and "lot" in params:
+        event_id = int(unquote(params["event"]))
+        lot_id = int(unquote(params["lot"]))
+        event = Event.objects.get(pk=event_id)
+        lot = ParkingLot.objects.get(pk=lot_id)
+        if lot in event.parkingLots.all():
+            event.parkingLots.remove(lot)
+        else:
+            event.parkingLots.add(lot)
+        res["success"] = True
+
+    return JsonResponse(res)

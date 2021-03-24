@@ -14,5 +14,7 @@ urlpatterns = [
 	path("reservation/", views.reservation, name="reservation"),
 	path("user/", views.user, name="user"),
     path("events/", views.events, name="events"),
+	path("assign_events/", views.assign_events, name="assign_events"),
+	path("assign_events/assign_event/", views.assign_event, name="assign_event"),
 	path("add_funds", views.add_funds, name="add_funds")
 ]

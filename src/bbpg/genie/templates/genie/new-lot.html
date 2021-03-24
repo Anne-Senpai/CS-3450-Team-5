@@ -1,0 +1,47 @@
+{% extends 'genie/base.html' %}
+{% load static %}
+{% block title %}Add a New Lot{% endblock %}
+{% block content %}
+
+<div class="row justify-content-center">
+	<div class="col-lg-6 d-flex">
+		<div class="card my-3 w-100">
+			<div class="card-body">
+                <H2>Create A New Lot</H2>
+				<form>
+                    <div class="form-group">
+                        <label for="formGroupExampleInput">Lot Name</label>
+                        <input type="text" class="form-control" id="lotName" placeholder="Example Lot">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputAddress">Address</label>
+                        <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputAddress2">Address 2</label>
+                        <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                        <label for="inputCity">City</label>
+                        <input type="text" class="form-control" id="inputCity">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <div class="form-group col-md-6">
+                            <label for="inputState">State</label>
+                            <input type="text" class="form-control" id="inputState">
+                            </div>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="inputZip">Zip</label>
+                            <input type="text" class="form-control" id="inputZip">
+                        </div>
+                    </div>
+                </form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}
