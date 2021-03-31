@@ -37,9 +37,9 @@
                 {% endfor %}
             </table>
             {% if user.profile.is_manager or user.profile.is_supervisor %}
-            <h2 class="mb-3 mt-5">Your Posted Lots <a href="#" class="p mx-3 btn btn-primary"><i
-                    class="fa-fw fas fa-plus"></i>
-                Post New Lot</a></h2>
+            <h2 class="mb-3 mt-5">Your Posted Lots <button class="p mx-3 btn btn-primary"><i
+                    class="fa-fw fas fa-plus" data-toggle="modal" data-target="#exampleModal"></i>
+                Post New Lot</button></h2>
 
             <table class="table table-striped mb-5">
                 <tr>
@@ -60,7 +60,7 @@
                                 {% for event in lot.event_set.all %}
                                     {{ event.name }} | {{ event.startTime|date:'M d Y h:i A' }}<br>
                                 {% endfor %}
-                            <a class="btn btn-link" href="{% url 'genie:assign_events' %}?lot={{ lot.pk }}"><i class="fas fa-pencil-alt"></i> Edit Event</a>
+                            <a class="btn btn-link" href="{% url 'genie:assign_events' %}?lot={{ lot.pk }}"><i class="fas fa-plus"></i> Assign Event</a>
                             </div>
                         </td>
                     </tr>
@@ -69,6 +69,27 @@
             {% endif %}
         </div>
     </div>
+
+	<div class="modal fade" id="new-lot-modal" tabindex="-1" role="dialog" aria-labelledby="new-lot-modal" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content p-4">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Area Details</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form>
+					<div class="modal-body">
+                        <label for="formGroupExampleInput">Lot Name</label>
+                        <input type="text" class="form-control" id="lotName" placeholder="Example Lot">
+                        <label for="inputAddress">Address</label>
+                        <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St, Logan, UT">
+					<button class="btn btn-info float-right">Next &rarr;</button>
+                </form>
+			</div>
+		</div>
+	</div>
     <script>
         var add_funds = document.getElementById("add_funds");
         var add_funds_form = document.getElementById("add_funds_form");
