@@ -3,13 +3,14 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from genie.models import Event, Reservation, ParkingLot, LotArea
+from genie.models import Event, Reservation, ParkingLot, LotArea, Profile
 from genie.forms import RegisterForm
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from urllib.parse import unquote
 import datetime
 from django.contrib.auth.views import auth_logout
+import random
 
 
 @login_required
@@ -47,7 +48,7 @@ def spots(request):
         areas = LotArea.objects.filter(parkingLot=lot_obj)
         for area in areas:
             area_avail_map.append([area, area.num_spots_available(event_obj)])
-        return render(request, 'genie/spots.html', {"event": event_obj, "lot": lot_obj, "areas": area_avail_map})
+        return render(request, 'genie/areas.html', {"event": event_obj, "lot": lot_obj, "areas": area_avail_map})
 
     else:
         return redirect("genie:events")
@@ -76,6 +77,8 @@ def register(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
+            profile = Profile(user=user, balance=0)
+            profile.save()
             return redirect("genie:index")
 
     else:
@@ -93,12 +96,12 @@ def events(request):
 def profile(request):
     return redirect("genie:index")
 
-
+@login_required
 def logout(request):
     auth_logout(request)
     return redirect("genie:login_view")
 
-
+@login_required
 def add_funds(request):
     profile = request.user.profile
     funds = float(request.POST["funds_to_add"])
@@ -106,7 +109,7 @@ def add_funds(request):
     profile.save()
     return redirect("genie:index")
 
-
+@login_required
 def assign_events(request):
     params = request.GET
     if "lot" in params:
@@ -115,7 +118,7 @@ def assign_events(request):
         evts = Event.objects.filter(startTime__gt=datetime.datetime.now())
         return render(request, "genie/assign_event.html", {"events": evts, "lot": lot})
 
-
+@login_required
 def assign_event(request):
     params = request.GET
     res = {"success": False}
@@ -131,3 +134,25 @@ def assign_event(request):
         res["success"] = True
 
     return JsonResponse(res)
+
+@login_required
+def make_reservation(request):
+    params = request.GET
+    if "event" in params and "area" in params:
+        prof = request.user.profile
+        event_id = int(unquote(params["event"]))
+        area_id = int(unquote(params["area"]))
+        event = Event.objects.get(pk=event_id)
+        area = LotArea.objects.get(pk=area_id)
+
+        if area.num_spots_available() > 0:
+
+            new_reservation = Reservation(event=event, lotArea=area, user=request.user)
+            code = f"{new_reservation.pk}R{random.randint(111111, 999999)}"
+            new_reservation.code = code
+            new_reservation.save()
+
+            prof.balance -= area.price
+            prof.save()
+
+    return render(request, "genie/index.html")

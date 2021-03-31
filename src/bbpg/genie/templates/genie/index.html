@@ -60,7 +60,7 @@
                                 {% for event in lot.event_set.all %}
                                     {{ event.name }} | {{ event.startTime|date:'M d Y h:i A' }}<br>
                                 {% endfor %}
-                            <a class="btn btn-link" href="{% url 'genie:assign_events' %}?lot={{ lot.pk }}"><i class="fas fa-plus"></i> Assign Event</a>
+                            <a class="btn btn-link" href="{% url 'genie:assign_events' %}?lot={{ lot.pk }}"><i class="fas fa-pencil-alt"></i> Edit Event</a>
                             </div>
                         </td>
                     </tr>
