@@ -1,25 +1,90 @@
 {% extends 'genie/base.html' %}
 {% load static %}
-{% block title %}Add a New Lot{% endblock %}
+{% block title %}Assign Areas{% endblock %}
 {% block content %}
 
-<div class="row justify-content-center">
-	<div class="col-lg-6 d-flex">
-		<div class="card my-3 w-100">
-			<div class="card-body">
-                <h2>Create A New Lot</h2>
-				<form>
-                    <div class="form-group">
-                        <label for="formGroupExampleInput">Lot Name</label>
-                        <input type="text" class="form-control" id="lotName" placeholder="Example Lot">
-                    </div>
-                    <div class="form-group">
-                        <label for="inputAddress">Address</label>
-                        <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St, Logan, UT">
-                    </div>
-					<button class="btn btn-info float-right">Next &rarr;</button>
-                </form>
+<h1 class="mb-4">Assign Areas</h1>
+
+<p class="lead font-weight-bolder mt-3 mb-0">{{ lot.name }}</p>
+<p class="lead mb-1">{{ lot.address }}</p>
+<a class="" href="{% url 'genie:lots' %}?event={{ event.pk }}"><i class="fa-fw fas fa-arrow-left"></i> select a different lot</a>
+
+<div class="row mt-5">
+	<div class="col"><p><strong>Area</strong></p></div>
+	<div class="col"><p><strong>Capacity</strong></p></div>
+	<div class="col"><p><strong>Spot Type</strong></p></div>
+	<div class="col"><p><strong>Price</strong></p></div>
+	<div class="col"><p><strong>Edit</strong></p></div>
+</div>
+<hr class="mt-0" />
+{% for area in areas %}
+<div class="row">
+	<div class="col">{{ area.0.areaIdentifier }}</div>
+	<div class="col">{{ area.1 }} of {{ area.0.capacity }}</div>
+	<div class="col justify-content-center">
+		<div>
+			<span class="badge badge-pill badge-info mr-2">{{ area.0.type }}</span>
+		</div>
+	</div>
+	<div class="col">${{ area.0.price }}</div>
+	<div class="col">
+		<button type="button" class="pt-0 pl-0 btn btn-link" data-toggle="modal" data-target="#edit-modal"><i class="fas fa-pencil-alt"></i> Edit</button>
+		{% endif %}
+	</div>
+</div>
+<hr class="mt-3" />
+
+<div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="edit-modal" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content p-4">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Area Details</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
+			<form>
+				<div class="modal-body">
+					<label for="area">Area ID: </label><input type="text" class="form-control" id="area">
+					<label for="area">Capacity: </label><input type="number" class="form-control" id="area">
+					<label for="area">Spot Type: </label><input type="text" class="form-control" id="area">
+					<label for="area">Spot Price: $</label><input type="number" class="form-control" id="area">*
+					<p><small>*BBPG will take a cut of 15% automatically when a purchase is made</small></p>
+				</div>
+				<div class="modal-footer">
+					<a class="btn btn-block btn-outline-success mt-2 mb-3" href="#"><i class="fas fa-fw fa-check"></i> Save Changes</a>
+					<button type="button" data-dismiss="modal" class="close btn btn-block btn-outline-danger mt-2 mb-3"><i class="fas fa-fw fa-times"></i> Cancel</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{% endfor %}
+
+<button class="p mx-3 btn btn-primary" data-toggle="modal" data-target="#area-modal"><i class="fa-fw fas fa-plus"></i>New Area</button>
+
+<div class="modal fade" id="area-modal" tabindex="-1" role="dialog" aria-labelledby="area-modal" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content p-4">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Area Details</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form>
+				<div class="modal-body">
+					<label for="area">Area ID: </label><input type="text" class="form-control" id="area">
+					<label for="area">Capacity: </label><input type="number" class="form-control" id="area">
+					<label for="area">Spot Type: </label><input type="text" class="form-control" id="area">
+					<label for="area">Spot Price: $</label><input type="number" class="form-control" id="area">*
+					<p><small>*BBPG will take a cut of 15% automatically when a purchase is made</small></p>
+				</div>
+				<div class="modal-footer">
+					<a class="btn btn-block btn-outline-success mt-2 mb-3" href="#"><i class="fas fa-fw fa-plus"></i> Add Area</a>
+					<button type="button" data-dismiss="modal" class="close btn btn-block btn-outline-danger mt-2 mb-3"><i class="fas fa-fw fa-times"></i> Cancel</button>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
