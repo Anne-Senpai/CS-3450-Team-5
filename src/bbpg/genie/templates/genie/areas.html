@@ -51,7 +51,6 @@
         </button>
       </div>
       <div class="modal-body">
-          <label for="quantity">Quantity: </label><input type="text" class="form-control" id="quantity" placeholder="1"/>
           <p class="m-0"><strong>Area: </strong>{{ area.0.areaIdentifier }}</p>
           <p class="m-0"><strong>Lot Address: </strong>{{ lot.address }}</p>
           <h3 class="h5 mt-2 text-primary">Event Details</h3>
@@ -63,7 +62,7 @@
           <p class="card-text"><strong>Price:</strong> ${{ area.0.price }}<br /><strong>Current Balance: </strong> $<span id="balance">{{ user.profile.balance }}</span></p>
       </div>
       <div class="modal-footer">
-          <a class="btn btn-block btn-outline-success mt-2 mb-3" href="{% url 'genie:make_reservation' %}/?event={{ event.pk }}&area={{ area.0.pk }}"><i class="fas fa-fw fa-check"></i> Make Payment</a>
+          <a class="btn btn-block btn-outline-success mt-2 mb-3" href="{% url 'genie:make_reservation' %}?event={{ event.pk }}&area={{ area.0.pk }}"><i class="fas fa-fw fa-check"></i> Make Payment</a>
           <button class="btn btn-block btn-outline-danger mt-2 mb-3"><i class="fas fa-fw fa-times"></i> Cancel</button>
       </div>
     </div>
