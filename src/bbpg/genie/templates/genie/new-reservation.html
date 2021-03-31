@@ -22,7 +22,7 @@
 				<li class="list-group-item">
 					<h3 class="h5 mt-2 text-primary">Payment Details</h3>
 					<p class="card-text"><strong>Cost:</strong> $3.00<br /><strong>Current Balance: </strong> $<span id="balance">{{ user.profile.balance }}</span></p>
-					<a href="#" class="btn btn-block btn-outline-success mt-2 mb-3"><i class="fas fa-fw fa-check"></i> Make Payment</a>
+					<a href="{% url "genie:make_reservation" %}" class="btn btn-block btn-outline-success mt-2 mb-3"><i class="fas fa-fw fa-check"></i> Make Payment</a>
 					<a href="#" class="btn btn-block btn-outline-danger mt-2 mb-3"><i class="fas fa-fw fa-times"></i> Cancel</a>
 				</li>
 			</ul>

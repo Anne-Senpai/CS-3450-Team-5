@@ -145,7 +145,7 @@ def make_reservation(request):
         event = Event.objects.get(pk=event_id)
         area = LotArea.objects.get(pk=area_id)
 
-        if area.num_spots_available() > 0:
+        if area.num_spots_available(event) > 0:
 
             new_reservation = Reservation(event=event, lotArea=area, user=request.user)
             code = f"{new_reservation.pk}R{random.randint(111111, 999999)}"
@@ -155,4 +155,18 @@ def make_reservation(request):
             prof.balance -= area.price
             prof.save()
 
-    return render(request, "genie/index.html")
+    return redirect("genie:index")
+
+@login_required
+def cancel_reservation(request):
+    params = request.GET
+    if "reservation" in params:
+        reserve_id = int(unquote(params["reservation"]))
+        reserve = Reservation.objects.get(pk=reserve_id)
+        refund = reserve.lotArea.price
+        reserve.delete()
+        prof = request.user.profile
+        prof.balance += refund
+        prof.save()
+
+    return redirect("genie:index")

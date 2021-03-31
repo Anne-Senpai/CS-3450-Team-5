@@ -19,6 +19,7 @@
             <h2 class="mb-3 mt-5">Your Reservations <a href="{% url 'genie:events' %}" class="p mx-3 btn btn-primary"><i class="fa-fw fas fa-plus"></i>New Reservation</a></h2>
             <table class="table table-striped">
                 <tr>
+                    <th>Event</th>
                     <th>Date</th>
                     <th>Lot</th>
                     <th>Area</th>
@@ -27,18 +28,19 @@
                 </tr>
                 {% for reservation in reservations %}
                     <tr>
+                        <td>{{ reservation.event.name }}</td>
                         <td>{{ reservation.event.startTime|date:'M d Y h:i A' }}</td>
                         <td>{{ reservation.lotArea.parkingLot.name }}</td>
                         <td>{{ reservation.lotArea.areaIdentifier }}</td>
                         <td>{{ reservation.lotArea.parkingLot.address }}</td>
-                        <td><a href="#" class="btn btn-link">Edit Reservation</a></td>
+                        <td><a href="{% url "genie:cancel_reservation" %}?reservation={{ reservation.pk }}" class="btn btn-link text-danger"><i class="fas fa-times"></i> Cancel</a></td>
                     </tr>
 
                 {% endfor %}
             </table>
             {% if user.profile.is_manager or user.profile.is_supervisor %}
-            <h2 class="mb-3 mt-5">Your Posted Lots <button class="p mx-3 btn btn-primary"><i
-                    class="fa-fw fas fa-plus" data-toggle="modal" data-target="#exampleModal"></i>
+            <h2 class="mb-3 mt-5">Your Posted Lots <button class="p mx-3 btn btn-primary"  data-toggle="modal" data-target="#new-lot-modal"><i
+                    class="fa-fw fas fa-plus"></i>
                 Post New Lot</button></h2>
 
             <table class="table table-striped mb-5">
