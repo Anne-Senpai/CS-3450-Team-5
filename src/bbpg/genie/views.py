@@ -170,3 +170,12 @@ def cancel_reservation(request):
         prof.save()
 
     return redirect("genie:index")
+
+@login_required
+def create_lot(request):
+    params = request.POST
+    lot_name = params['lotName']
+    lot_address = params['lotAddress']
+
+
+
