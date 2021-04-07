@@ -19,39 +19,39 @@
 <hr class="mt-0" />
 {% for area in areas %}
 <div class="row">
-	<div class="col">{{ area.0.areaIdentifier }}</div>
-	<div class="col">{{ area.1 }} of {{ area.0.capacity }}</div>
+	<div class="col">{{ area.areaIdentifier }}</div>
+	<div class="col">{{ area.capacity }}</div>
 	<div class="col justify-content-center">
 		<div>
-			<span class="badge badge-pill badge-info mr-2">{{ area.0.type }}</span>
+			<span class="badge badge-pill badge-info mr-2">{{ area.type }}</span>
 		</div>
 	</div>
-	<div class="col">${{ area.0.price }}</div>
+	<div class="col">${{ area.price }}</div>
 	<div class="col">
-		<button type="button" class="pt-0 pl-0 btn btn-link" data-toggle="modal" data-target="#edit-modal"><i class="fas fa-pencil-alt"></i> Edit</button>
+		<button type="button" class="pt-0 pl-0 btn btn-link" data-toggle="modal" data-target="#edit-modal_{{ area.pk }}"><i class="fas fa-pencil-alt"></i> Edit</button>
 	</div>
 </div>
 <hr class="mt-3" />
 
-<div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="edit-modal" aria-hidden="true">
+<div class="modal fade" id="edit-modal_{{ area.pk }}" tabindex="-1" role="dialog" aria-labelledby="edit-modal_{{ area.pk }}" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content p-4">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Area Details</h5>
+				<h5 class="modal-title" id="edit_area_modal_{{ area.pk }}">Area Details</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<form>
+			<form action="{% url update_area %}" method="post">
 				<div class="modal-body">
-					<label for="area">Area ID: </label><input type="text" class="form-control" id="area">
-					<label for="area">Capacity: </label><input type="number" class="form-control" id="area">
-					<label for="area">Spot Type: </label><input type="text" class="form-control" id="area">
-					<label for="area">Spot Price: $</label><input type="number" class="form-control" id="area">*
+					<label for="area_{{ area.pk }}">Area ID: </label><input type="text" class="form-control" value="{{ area.areaIdentifier }}" id="area_{{ area.pk }}">
+					<label for="capacity_{{ area.pk }}">Capacity: </label><input type="number" class="form-control" value="{{ area.capacity }}" id="capacity_{{ area.pk }}">
+					<label for="type_{{ area.pk }}">Spot Type: </label><input type="text" class="form-control" value="{{ area.type }}" id="type_{{ area.pk }}">
+					<label for="price_{{ area.pk }}">Spot Price: $</label><input type="number" class="form-control" value="{{ area.price }}" id="price_{{ area.pk }}">*
 					<p><small>*BBPG will take a cut of 15% automatically when a purchase is made</small></p>
 				</div>
 				<div class="modal-footer">
-					<a class="btn btn-block btn-outline-success mt-2 mb-3" href="#"><i class="fas fa-fw fa-check"></i> Save Changes</a>
+					<input type="submit" class="btn btn-block btn-outline-success mt-2 mb-3" value="Save Changes"/>
 					<button type="button" data-dismiss="modal" class="close btn btn-block btn-outline-danger mt-2 mb-3"><i class="fas fa-fw fa-times"></i> Cancel</button>
 				</div>
 			</form>
@@ -73,10 +73,10 @@
 			</div>
 			<form>
 				<div class="modal-body">
-					<label for="area">Area ID: </label><input type="text" class="form-control" id="area">
-					<label for="area">Capacity: </label><input type="number" class="form-control" id="area">
-					<label for="area">Spot Type: </label><input type="text" class="form-control" id="area">
-					<label for="area">Spot Price: $</label><input type="number" class="form-control" id="area">*
+					<label for="new_area">Area ID: </label><input type="text" class="form-control" id="new_area">
+					<label for="new_capacity">Capacity: </label><input type="number" class="form-control" id="new_capacity">
+					<label for="new_type">Spot Type: </label><input type="text" class="form-control" id="new_type">
+					<label for="new_price">Spot Price: $</label><input type="number" class="form-control" id="new_price">*
 					<p><small>*BBPG will take a cut of 15% automatically when a purchase is made</small></p>
 				</div>
 				<div class="modal-footer">

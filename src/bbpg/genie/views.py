@@ -12,6 +12,7 @@ import datetime
 from django.contrib.auth.views import auth_logout
 import random
 from django.utils.http import urlencode
+from django.http.response import HttpResponsePermanentRedirect
 
 
 @login_required
@@ -181,19 +182,33 @@ def create_lot(request):
     new_lot = ParkingLot(name=lot_name, address=lot_address, owner=request.user)
     new_lot.save()
 
-    base_url = reverse("genie:assign_areas")
-
-    return base_url + f"?{urlencode({'lot': new_lot.pk})}"
+    return HttpResponsePermanentRedirect(f"/assign_areas?lot={new_lot.pk}")
 
 def assign_areas(request):
     params = request.GET
     if "lot" in params:
         lot_record = ParkingLot.objects.get(pk=int(unquote(params["lot"])))
         areas = lot_record.lotarea_set.all()
-
+        #
+        # area_avail_map = []
+        # for area in areas:
+        #     area_avail_map.append([area, area.num_spots_available(event_obj)])
         return render(request, "genie/assign-areas.html", {"lot": lot_record, "areas": areas})
 
+@login_required
+def delete_lot(request):
+    params = request.GET
+    ctx = {}
+    if "lot" in params:
+        lot_id = int(unquote(params["lot"]))
+        lot = ParkingLot.objects.get(pk=lot_id)
+        reservations = Reservation.objects.filter(lotArea__parkingLot=lot).all()
+        if not reservations:
+            lot.delete()
+        else:
+            ctx = {"error": f"Cannot delete lot {lot.name}. Reservations for this lot have already been made."}
 
+    return redirect("genie:index", ctx)
 
 
 

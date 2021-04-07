@@ -20,6 +20,7 @@ urlpatterns = [
 	path("make_reservation/", views.make_reservation, name="make_reservation"),
 	path("cancel_reservation/", views.cancel_reservation, name="cancel_reservation"),
 	path("create_lot/", views.create_lot, name="create_lot"),
-	path("assign_areas", views.assign_areas, name="assign_areas")
+	path("assign_areas/", views.assign_areas, name="assign_areas"),
+	path("delete_lot/", views.delete_lot, name="delete_lot")
 
 ]

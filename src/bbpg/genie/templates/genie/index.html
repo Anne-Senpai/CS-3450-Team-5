@@ -66,7 +66,7 @@
                                 {% endfor %}
                             </div>
                         </td>
-						<td><a href="{% url "genie:cancel_reservation" %}?reservation={{ reservation.pk }}" class="btn btn-link text-danger"><i class="fas fa-times"></i> Cancel</a></td>
+						<td><a href="{% url "genie:delete_lot" %}?lot={{ lot.pk }}" class="btn btn-link text-danger"><i class="fas fa-times"></i> Delete</a></td>
                     </tr>
                 {% endfor %}
             </table>
