@@ -31,60 +31,69 @@
 				<li class="nav-item mr-3 {% if request.get_full_path == "/events/" %}active{% endif %}">
 					<a class="nav-link" href="{% url 'genie:events' %}">Events</a>
 				</li>
-                {% if user.profile.is_supervisor %}
-                <li class="nav-item mr-3 {% if request.get_full_path == "/user/" %}active{% endif %}">
-				    <a class="nav-link" href="{% url 'genie:user' %}">User</a>
+				{% if user.profile.is_supervisor %}
+				<li class="nav-item mr-3 {% if request.get_full_path == "/user/" %}active{% endif %}">
+					<a class="nav-link" href="{% url 'genie:user' %}">User</a>
 				</li>
-                {% endif %}
-				</ul>
-				<ul class="navbar-nav ml-auto mr-3">
-					<a class="nav-link" style="color:rgba(255,255,255, 1);" href="{% url 'genie:logout' %}">Logout <i class="fas fa-sign-out-alt"></i></a>
-				</ul>
-			</div>
-			{% endif %}
-		</nav>
-	</header>
-	<body>
-		<main>
-			<div class="container-fluid m-0 p-0">
-				{% if user.is_authenticated %}<div class="m-5">{% else %}<div class="m-0">{% endif %}
-					{% block content %}
-					{% endblock %}
+				{% endif %}
+			</ul>
+			<ul class="navbar-nav ml-auto mr-3">
+				<a class="nav-link" style="color:rgba(255,255,255, 1);" href="{% url 'genie:logout' %}">Logout <i class="fas fa-sign-out-alt"></i></a>
+			</ul>
+		</div>
+		{% endif %}
+	</nav>
+</header>
+<body>
+	<main>
+		<div class="container-fluid m-0 p-0">
+			{% if user.is_authenticated %}<div class="m-5">{% else %}<div class="m-0">{% endif %}
+				{% if user.is_authenticated %}
+				<div class="row">
+					<div class="col-lg-1"></div>
+					<div class="col-lg-10">
+						{% endif %}
+						{% block content %}
+						{% endblock %}
+						{% if user.is_authenticated %}
+					</div>
 				</div>
-			</div>
-		</main>
-	</body>
-	{% if user.is_authenticated %}
-	<footer class="w-100 bg-blue text-white text-center text-lg-start">
-		<div class="container-fluid w-100 p-0 m-0">
-
-			<div class="w-100 d-flex flex-row justify-content-between">
-				<div>
-					<img class="float-left ml-0" height="250px;" src="{% static 'genie/footer_left.png' %}" />
-				</div>
-
-				<div class="mb-4 mb-md-0 mt-5">
-					<h5 class="text-left text-uppercase">Contact Information</h5>
-					<p class="text-left mb-2">34 USU Street<br />Logan, UT 88888</p>
-					<p class="text-left mb-2"><i class="fas fa-phone fa-fw fa-sm"></i> (111)111-1111</p>
-					<p class="text-left"><i class="fas fa-envelope fa-fw fa-sm"></i> <a href="#">teamArthur@email.com</a></p>
-				</div>
-
-				<div class="mb-4 mb-md-0 mt-5">
-					<h5 class="text-left text-uppercase">About Us</h5>
-					<p class="text-left mb-2">Group 5 (Team Arthur)</p>
-					<p class="text-left mb-2">Makalee<br />Derek<br />Anne<br />Kate</p>
-
-				</div>
-
-				<div>
-					<img class="float-right mr-5" style="margin-top: -100px;" src="{% static 'genie/footer_right.png' %}" />
-				</div>
+				{% endif %}
 			</div>
 		</div>
+	</main>
+</body>
+{% if user.is_authenticated %}
+<footer class="w-100 bg-blue text-white text-center text-lg-start">
+	<div class="container-fluid w-100 p-0 m-0">
 
-		<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-			Special Thanks to Arthur <img class="d-inline" width="25px" src="{% static 'genie/arthur.png' %}"/> BBPG Mascot
+		<div class="w-100 d-flex flex-row justify-content-between">
+			<div>
+				<img class="float-left ml-0" height="250px;" src="{% static 'genie/footer_left.png' %}" />
+			</div>
+
+			<div class="mb-4 mb-md-0 mt-5">
+				<h5 class="text-left text-uppercase">Contact Information</h5>
+				<p class="text-left mb-2">34 USU Street<br />Logan, UT 88888</p>
+				<p class="text-left mb-2"><i class="fas fa-phone fa-fw fa-sm"></i> (111)111-1111</p>
+				<p class="text-left"><i class="fas fa-envelope fa-fw fa-sm"></i> <a href="#">teamArthur@email.com</a></p>
+			</div>
+
+			<div class="mb-4 mb-md-0 mt-5">
+				<h5 class="text-left text-uppercase">About Us</h5>
+				<p class="text-left mb-2">Group 5 (Team Arthur)</p>
+				<p class="text-left mb-2">Makalee<br />Derek<br />Anne<br />Kate</p>
+
+			</div>
+
+			<div>
+				<img class="float-right mr-5" style="margin-top: -100px;" src="{% static 'genie/footer_right.png' %}" />
+			</div>
 		</div>
-	</footer>
-	{% endif %}
+	</div>
+
+	<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+		Special Thanks to Arthur <img class="d-inline" width="25px" src="{% static 'genie/arthur.png' %}"/> BBPG Mascot
+	</div>
+</footer>
+{% endif %}
