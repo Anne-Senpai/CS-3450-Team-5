@@ -5,7 +5,7 @@
 {% block content %}
 <h1>Upcoming Events</h1>
 <p class="lead">Select from the events listed below to find and reserve a parking space.</p>
-<a href="#" class="p my-3 btn btn-primary"><i class="fa-fw fas fa-plus"></i> New Event</a>
+<button class="p mb-3 btn btn-primary"  data-toggle="modal" data-target="#new-event-modal"><i class="fa-fw fas fa-plus"></i> New Event</button>
 <div class="row">
 	{% for event in events %}
 	<div class="col-lg-6">
@@ -24,5 +24,35 @@
 			</div>
 		</div>
 		{% endfor %}
+	</div>
+	<div class="modal fade" id="new-event-modal" tabindex="-1" role="dialog" aria-labelledby="new-event-modal" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content p-4">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Event Details</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form>
+					<div class="modal-body">
+                        <label for="eventName">Event Name</label>
+                        <input type="text" class="form-control" id="eventName" placeholder="Big Cool Event">
+						<br />
+						<label for="eventDate">Date</label>
+                        <input type="date" class="form-control" id="eventDate" placeholder="mm/dd/yyyy">
+						<br />
+						<label for="eventTime">Start Time</label>
+                        <input type="time" class="form-control" id="startTime" placeholder="hh:mm">
+						<br />
+						<label for="eventTime">End Time</label>
+                        <input type="time" class="form-control" id="endTime" placeholder="hh:mm">
+						<br />
+                        <label for="address">Address</label>
+                        <input type="text" class="form-control" id="address" placeholder="1234 Main St, Logan, UT">
+					<button class="btn btn-info float-right mt-4">Create</button>
+                </form>
+			</div>
+		</div>
 	</div>
 	{% endblock %}
