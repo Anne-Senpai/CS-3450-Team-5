@@ -3,119 +3,138 @@
 {% block title %}Dashboard{% endblock %}
 {% block content %}
 
+<div class="toast sticky-top float-right mt-4" data-autohide="false">
+  <div class="toast-header bg-danger">
+    <strong class="mr-auto text-white">Oops!</strong>
+    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+  </div>
+  <div class="toast-body">
+    {% for message in messages %}
+    {{ message }}
+    {% endfor %}
+  </div>
+</div>
 
-    <h1>User Dashboard</h1>
-    <p class="lead">Welcome, {{ user.username}}!</p>
-	<h2 class="h3 mt-5">Account Balance</h2>
-	<p class="card-text"><strong>Remaining Balance: </strong> $<span id="balance">{{ user.profile.balance }}</span></p>
-	<a id="add_funds" class="btn btn-link" href="#"><i class="fas fa-plus"></i> Add Funds</a>
-	<form method="post" action="{% url 'genie:add_funds'%}" id="add_funds_form" hidden>
-		{% csrf_token %}
-		<input id="funds_to_add" name="funds_to_add" type="number" step=".01"/>
-		<input class="btn btn-success py-1" type="submit" id="submit_add_funds" value="Add"/>
-		<button class="btn btn-danger py-1" id="cancel_add_funds">Cancel</button>
-	</form>
-    <div class="row mb-5">
-        <div class="col-lg-9">
-            <h2 class="mb-3 mt-5">Your Reservations <a href="{% url 'genie:events' %}" class="p mx-3 btn btn-primary"><i class="fa-fw fas fa-plus"></i>New Reservation</a></h2>
-            <table class="table table-striped">
-                <tr>
-                    <th>Event</th>
-                    <th>Date</th>
-                    <th>Lot</th>
-                    <th>Area</th>
-                    <th>Address</th>
-                    <th></th>
-                </tr>
-                {% for reservation in reservations %}
-                    <tr>
-                        <td>{{ reservation.event.name }}</td>
-                        <td>{{ reservation.event.startTime|date:'M d Y h:i A' }}</td>
-                        <td>{{ reservation.lotArea.parkingLot.name }}</td>
-                        <td>{{ reservation.lotArea.areaIdentifier }}</td>
-                        <td>{{ reservation.lotArea.parkingLot.address }}</td>
-                        <td><a href="{% url "genie:cancel_reservation" %}?reservation={{ reservation.pk }}" class="btn btn-link text-danger"><i class="fas fa-times"></i> Cancel</a></td>
-                    </tr>
+<h1>User Dashboard</h1>
+<p class="lead">Welcome, {{ user.username}}!</p>
+<h2 class="h3 mt-5">Account Balance</h2>
+<p class="card-text"><strong>Remaining Balance: </strong> $<span id="balance">{{ user.profile.balance }}</span></p>
+<a id="add_funds" class="btn btn-link" href="#"><i class="fas fa-plus"></i> Add Funds</a>
+<form method="post" action="{% url 'genie:add_funds'%}" id="add_funds_form" hidden>
+	{% csrf_token %}
+	<input id="funds_to_add" name="funds_to_add" type="number" step=".01"/>
+	<input class="btn btn-success py-1" type="submit" id="submit_add_funds" value="Add"/>
+	<button class="btn btn-danger py-1" id="cancel_add_funds">Cancel</button>
+</form>
+<div class="row mb-5">
+	<div class="col-lg-12">
+		<h2 class="mb-3 mt-5">Your Reservations <a href="{% url 'genie:events' %}" class="p mx-3 btn btn-primary"><i class="fa-fw fas fa-plus"></i>New Reservation</a></h2>
+		<table class="table table-striped shadow">
+			<tr>
+				<th>Event</th>
+				<th>Date</th>
+				<th>Lot</th>
+				<th>Area</th>
+				<th>Address</th>
+				<th></th>
+			</tr>
+			{% for reservation in reservations %}
+			<tr>
+				<td>{{ reservation.event.name }}</td>
+				<td>{{ reservation.event.startTime|date:'M d Y h:i A' }}</td>
+				<td>{{ reservation.lotArea.parkingLot.name }}</td>
+				<td>{{ reservation.lotArea.areaIdentifier }}</td>
+				<td>{{ reservation.lotArea.parkingLot.address }}</td>
+				<td><a href="{% url "genie:cancel_reservation" %}?reservation={{ reservation.pk }}" class="btn btn-link text-danger"><i class="fas fa-times"></i> Cancel</a></td>
+			</tr>
 
-                {% endfor %}
-            </table>
-            {% if user.profile.is_manager or user.profile.is_supervisor %}
-            <h2 class="mb-3 mt-5">Your Posted Lots <button class="p mx-3 btn btn-primary"  data-toggle="modal" data-target="#new-lot-modal"><i
-                    class="fa-fw fas fa-plus"></i>
-                Post New Lot</button></h2>
+			{% endfor %}
+		</table>
+		{% if user.profile.is_manager or user.profile.is_supervisor %}
+		<h2 class="mb-3 mt-5">Your Posted Lots <button class="p mx-3 btn btn-primary"  data-toggle="modal" data-target="#new-lot-modal"><i
+			class="fa-fw fas fa-plus"></i>
+			Post New Lot</button></h2>
 
-            <table class="table table-striped mb-5">
-                <tr>
-                    <th>Name</th>
-                    <th>Address</th>
-                    <th width="40%">Events</th>
+			<table class="table table-striped mb-5 shadow">
+				<tr>
+					<th>Name</th>
+					<th>Address</th>
+					<th width="40%">Events</th>
 					<th></th>
-                </tr>
-                {% for lot in lots %}
-                    <tr>
-                        <td><a href="{% url 'genie:assign_areas' %}?lot={{ lot.pk }}">{{ lot.name }}</a></td>
-                        <td>{{ lot.address }}</td>
-                        <td>
-                            <span>{{ lot.event_set.all|length }}</span><a class="link-secondary text-decoration-none"
-                                                                          data-toggle="collapse"
-                                                                          href="#eventItems{{ lot.pk }}">
-                            <i class="fas fa-angle-down text-gray"></i></a> <a class="btn btn-link ml-5" href="{% url 'genie:assign_events' %}?lot={{ lot.pk }}"><i class="fas fa-plus"></i> Assign Event</a>
-                            <div id="eventItems{{ lot.pk }}" class="collapse">
-                                {% for event in lot.event_set.all %}
-                                    <strong style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 15ch; display:inline-block" data-toggle="tooltip" title="{{ event.name }}"> {{ event.name }}</strong> <span style="white-space: nowrap; overflow: hidden; display:inline-block"> {{ event.startTime|date:'M d Y h:i A' }}</span><br>
-                                {% endfor %}
-                            </div>
-                        </td>
+				</tr>
+				{% for lot in lots %}
+				<tr>
+					<td><a href="{% url 'genie:assign_areas' %}?lot={{ lot.pk }}">{{ lot.name }}</a></td>
+					<td>{{ lot.address }}</td>
+					<td>
+						<span><a class="link-secondary text-decoration-none"
+							data-toggle="collapse"
+							href="#eventItems{{ lot.pk }}"><i class="fas fa-angle-down"></i> Details</a> ({{ lot.event_set.all|length }})</span>
+							<a class="btn btn-link ml-4" href="{% url 'genie:assign_events' %}?lot={{ lot.pk }}"><i class="fas fa-plus"></i> Assign Event</a>
+							<div id="eventItems{{ lot.pk }}" class="collapse">
+								{% for event in lot.event_set.all %}
+								<strong style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 15ch; display:inline-block" data-toggle="tooltip" title="{{ event.name }}"> {{ event.name }}</strong> <span style="white-space: nowrap; overflow: hidden; display:inline-block"> {{ event.startTime|date:'M d Y h:i A' }}</span><br>
+								{% endfor %}
+							</div>
+						</td>
 						<td><a href="{% url "genie:delete_lot" %}?lot={{ lot.pk }}" class="btn btn-link text-danger"><i class="fas fa-times"></i> Delete</a></td>
-                    </tr>
-                {% endfor %}
-            </table>
-            {% endif %}
-        </div>
-    </div>
-
-	<div class="modal fade" id="new-lot-modal" tabindex="-1" role="dialog" aria-labelledby="new-lot-modal" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content p-4">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Lot Details</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-
-				<form method="post" action="{% url "genie:create_lot" %}">
-                    {% csrf_token %}
-					<div class="modal-body">
-                        <label for="formGroupExampleInput">Lot Name</label>
-                        <input type="text" class="form-control" id="lotName" name="lotName" placeholder="Example Lot">
-                        <br />
-                        <label for="lotAddress">Address</label>
-                        <input type="text" class="form-control" id="lotAddress" name="lotAddress" placeholder="1234 Main St, Logan, UT">
-					<input type="submit" class="btn btn-info float-right mt-4" value="Next &rarr;"/>
-                </form>
+					</tr>
+					{% endfor %}
+				</table>
+				{% endif %}
 			</div>
 		</div>
-	</div>
-    <script>
-        var add_funds = document.getElementById("add_funds");
-        var add_funds_form = document.getElementById("add_funds_form");
-        var submit_add_funds = document.getElementById("submit_add_funds");
-        var cancel_add_funds = document.getElementById("cancel_add_funds");
-        var funds_to_add = document.getElementById("funds_to_add");
-        var balance = document.getElementById("balance");
 
-        add_funds.addEventListener("click", function () {
-            add_funds.hidden = true;
-            add_funds_form.hidden = false;
-        })
-        cancel_add_funds.addEventListener("click", function (){
-            add_funds.hidden = false;
-            add_funds_form.hidden = true;
-            funds_to_add.value = 0;
-        })
+		<div class="modal fade" id="new-lot-modal" tabindex="-1" role="dialog" aria-labelledby="new-lot-modal" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content p-4">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Lot Details</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+
+					<form method="post" action="{% url "genie:create_lot" %}">
+						{% csrf_token %}
+						<div class="modal-body">
+							<label for="formGroupExampleInput">Lot Name</label>
+							<input type="text" class="form-control" id="lotName" name="lotName" placeholder="Example Lot">
+							<br />
+							<label for="lotAddress">Address</label>
+							<input type="text" class="form-control" id="lotAddress" name="lotAddress" placeholder="1234 Main St, Logan, UT">
+							<input type="submit" class="btn btn-info float-right mt-4" value="Next &rarr;"/>
+						</form>
+					</div>
+				</div>
+			</div>
 
 
-    </script>
+			<script>
+                {% if messages %}
+				$(document).ready(function(){
+					$('.toast').toast('show');
+				});
+                {% endif %}
 
-{% endblock %}
+				var add_funds = document.getElementById("add_funds");
+				var add_funds_form = document.getElementById("add_funds_form");
+				var submit_add_funds = document.getElementById("submit_add_funds");
+				var cancel_add_funds = document.getElementById("cancel_add_funds");
+				var funds_to_add = document.getElementById("funds_to_add");
+				var balance = document.getElementById("balance");
+
+				add_funds.addEventListener("click", function () {
+					add_funds.hidden = true;
+					add_funds_form.hidden = false;
+				})
+				cancel_add_funds.addEventListener("click", function (){
+					add_funds.hidden = false;
+					add_funds_form.hidden = true;
+					funds_to_add.value = 0;
+				})
+
+
+			</script>
+
+			{% endblock %}

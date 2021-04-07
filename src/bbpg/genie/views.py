@@ -13,6 +13,7 @@ from django.contrib.auth.views import auth_logout
 import random
 from django.utils.http import urlencode
 from django.http.response import HttpResponsePermanentRedirect
+from django.contrib import messages
 
 
 @login_required
@@ -184,21 +185,22 @@ def create_lot(request):
 
     return HttpResponsePermanentRedirect(f"/assign_areas?lot={new_lot.pk}")
 
+@login_required
 def assign_areas(request):
     params = request.GET
     if "lot" in params:
         lot_record = ParkingLot.objects.get(pk=int(unquote(params["lot"])))
         areas = lot_record.lotarea_set.all()
-        #
-        # area_avail_map = []
-        # for area in areas:
-        #     area_avail_map.append([area, area.num_spots_available(event_obj)])
+
         return render(request, "genie/assign-areas.html", {"lot": lot_record, "areas": areas})
 
 @login_required
 def delete_lot(request):
     params = request.GET
-    ctx = {}
+    u = request.user
+    reservations = Reservation.objects.filter(user=u)
+    ParkingLots = ParkingLot.objects.filter(owner=u)
+    ctx = {"reservations": reservations, "lots": ParkingLots}
     if "lot" in params:
         lot_id = int(unquote(params["lot"]))
         lot = ParkingLot.objects.get(pk=lot_id)
@@ -206,9 +208,9 @@ def delete_lot(request):
         if not reservations:
             lot.delete()
         else:
-            ctx = {"error": f"Cannot delete lot {lot.name}. Reservations for this lot have already been made."}
+            messages.error(request, f"Cannot delete lot {lot.name}. Reservations for this lot have already been made.", "error")
 
-    return redirect("genie:index", ctx)
+    return redirect("genie:index")
 
 
 

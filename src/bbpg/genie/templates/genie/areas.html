@@ -7,11 +7,11 @@
 
 <p class="lead font-weight-bolder mb-0">{{ event.name }}</p>
 <p class="lead mb-1">{{ event.startTime|date:'M d Y h:i A' }} | {{ event.address }}</p>
-<a class="" href="{% url 'genie:events' %}"><i class="fa-fw fas fa-arrow-left"></i> select a different event</a>
+<a class="lead" href="{% url 'genie:events' %}"><i class="fa-fw fas fa-arrow-left"></i> select a different event</a>
 
 <p class="lead font-weight-bolder mt-3 mb-0">{{ lot.name }}</p>
 <p class="lead mb-1">{{ lot.address }}</p>
-<a class="" href="{% url 'genie:lots' %}?event={{ event.pk }}"><i class="fa-fw fas fa-arrow-left"></i> select a different lot</a>
+<a class="lead" href="{% url 'genie:lots' %}?event={{ event.pk }}"><i class="fa-fw fas fa-arrow-left"></i> select a different lot</a>
 
 <div class="row mt-5">
 	<div class="col"><p><strong>Area</strong></p></div>

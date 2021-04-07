@@ -7,7 +7,7 @@
 
 <p class="lead font-weight-bolder mb-0">{{ event.name }}</p>
 <p class="lead mb-1">{{ event.startTime|date:'M d Y h:i A' }} | {{ event.address }}</p>
-<a class="" href="{% url 'genie:events' %}"><i class="fa-fw fas fa-arrow-left"></i> select a different event</a>
+<a class="lead" href="{% url 'genie:events' %}"><i class="fa-fw fas fa-arrow-left"></i> select a different event</a>
 
 <div class="row mt-3">
     {% for lot in lots %}
@@ -16,7 +16,7 @@
             <div class="card-body">
                 <h2 class="h4 mt-2"><a class="text-primary stretched-link" href="{% url 'genie:spots' %}?event={{ event.pk }}&lot={{ lot.pk }}">{{ lot.name }}</a></h2>
                 <p class="m-0"><i class="fas fa-map-marker-alt fa-fw fa-sm text-primary">&nbsp;</i>{{ lot.address }}</p>
-                <p class="m-0"><strong>Spots Available:</strong> {{ lot.get_num_spots }}</p>
+                <p class="m-0"><strong>Areas Available:</strong> {{ lot.get_num_spots }}</p>
                 <p class="">{% for type in lot.get_types %}
                     <span class="badge badge-pill badge-info mr-2
                         {% if forloop.counter|divisibleby:4 %}pill-4{% endif %}
