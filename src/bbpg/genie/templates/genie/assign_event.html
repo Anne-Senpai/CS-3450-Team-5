@@ -6,7 +6,7 @@
 
     <h1>Edit Assigned Events</h1>
     <p class="lead"><strong>Lot:</strong> {{ lot.name }}</p>
-    <a class="" href="{% url 'genie:index' %}"><i class="fa-fw fas fa-arrow-left"></i> return to dashboard</a>
+    <a class="lead" href="{% url 'genie:index' %}"><i class="fa-fw fas fa-arrow-left mb-4"></i> return to dashboard</a>
     {% for event in events %}
     <div class="media d-flex align-items-center mt-5 mt-lg-0 mb-3">
         <div class="mr-3 bg-info p-3 px-4 text-center text-white" style="width: 125px;">
@@ -32,6 +32,5 @@
             console.log(toggle)
             return fetch("/assign_events/assign_event/?lot=" + lot_id + "&event=" + toggle.dataset.event_id)
         }
-
     </script>
 {% endblock %}
