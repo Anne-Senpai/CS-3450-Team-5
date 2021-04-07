@@ -3,6 +3,7 @@
 {% block title %}Dashboard{% endblock %}
 {% block content %}
 
+
     <h1>User Dashboard</h1>
     <p class="lead">Welcome, {{ user.username}}!</p>
 	<h2 class="h3 mt-5">Account Balance</h2>
@@ -52,7 +53,7 @@
                 </tr>
                 {% for lot in lots %}
                     <tr>
-                        <td>{{ lot.name }}</td>
+                        <td><a href="{% url 'genie:assign_areas' %}?lot={{ lot.pk }}">{{ lot.name }}</a></td>
                         <td>{{ lot.address }}</td>
                         <td>
                             <span>{{ lot.event_set.all|length }}</span><a class="link-secondary text-decoration-none"
@@ -61,7 +62,7 @@
                             <i class="fas fa-angle-down text-gray"></i></a> <a class="btn btn-link ml-5" href="{% url 'genie:assign_events' %}?lot={{ lot.pk }}"><i class="fas fa-plus"></i> Assign Event</a>
                             <div id="eventItems{{ lot.pk }}" class="collapse">
                                 {% for event in lot.event_set.all %}
-                                    {{ event.name }} | {{ event.startTime|date:'M d Y h:i A' }}<br>
+                                    <strong style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 15ch; display:inline-block" data-toggle="tooltip" title="{{ event.name }}"> {{ event.name }}</strong> <span style="white-space: nowrap; overflow: hidden; display:inline-block"> {{ event.startTime|date:'M d Y h:i A' }}</span><br>
                                 {% endfor %}
                             </div>
                         </td>
@@ -77,18 +78,21 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content p-4">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Area Details</h5>
+					<h5 class="modal-title" id="exampleModalLabel">Lot Details</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<form>
+
+				<form method="post" action="{% url "genie:create_lot" %}">
+                    {% csrf_token %}
 					<div class="modal-body">
                         <label for="formGroupExampleInput">Lot Name</label>
-                        <input type="text" class="form-control" id="lotName" placeholder="Example Lot">
-                        <label for="inputAddress">Address</label>
-                        <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St, Logan, UT">
-					<button class="btn btn-info float-right">Next &rarr;</button>
+                        <input type="text" class="form-control" id="lotName" name="lotName" placeholder="Example Lot">
+                        <br />
+                        <label for="lotAddress">Address</label>
+                        <input type="text" class="form-control" id="lotAddress" name="lotAddress" placeholder="1234 Main St, Logan, UT">
+					<input type="submit" class="btn btn-info float-right mt-4" value="Next &rarr;"/>
                 </form>
 			</div>
 		</div>
