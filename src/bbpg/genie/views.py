@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from genie.models import Event, Reservation, ParkingLot, LotArea, Profile
 from genie.forms import RegisterForm
@@ -11,6 +11,7 @@ from urllib.parse import unquote
 import datetime
 from django.contrib.auth.views import auth_logout
 import random
+from django.utils.http import urlencode
 
 
 @login_required
@@ -176,6 +177,24 @@ def create_lot(request):
     params = request.POST
     lot_name = params['lotName']
     lot_address = params['lotAddress']
+
+    new_lot = ParkingLot(name=lot_name, address=lot_address, owner=request.user)
+    new_lot.save()
+
+    base_url = reverse("genie:assign_areas")
+
+    return base_url + f"?{urlencode({'lot': new_lot.pk})}"
+
+def assign_areas(request):
+    params = request.GET
+    if "lot" in params:
+        lot_record = ParkingLot.objects.get(pk=int(unquote(params["lot"])))
+        areas = lot_record.lotarea_set.all()
+
+        return render(request, "genie/assign-areas.html", {"lot": lot_record, "areas": areas})
+
+
+
 
 
 

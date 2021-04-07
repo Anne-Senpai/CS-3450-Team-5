@@ -5,7 +5,9 @@
 {% block content %}
 <h1>Upcoming Events</h1>
 <p class="lead">Select from the events listed below to find and reserve a parking space.</p>
+    {% if user.profile.is_supervisor %}
 <button class="p mb-3 btn btn-primary"  data-toggle="modal" data-target="#new-event-modal"><i class="fa-fw fas fa-plus"></i> New Event</button>
+    {% endif %}
 <div class="row">
 	{% for event in events %}
 	<div class="col-lg-6">

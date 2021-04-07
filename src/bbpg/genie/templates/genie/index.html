@@ -3,6 +3,7 @@
 {% block title %}Dashboard{% endblock %}
 {% block content %}
 
+
     <h1>User Dashboard</h1>
     <p class="lead">Welcome, {{ user.username}}!</p>
 	<h2 class="h3 mt-5">Account Balance</h2>
@@ -52,7 +53,7 @@
                 </tr>
                 {% for lot in lots %}
                     <tr>
-                        <td>{{ lot.name }}</td>
+                        <td><a href="{% url 'genie:assign_areas' %}?lot={{ lot.pk }}">{{ lot.name }}</a></td>
                         <td>{{ lot.address }}</td>
                         <td>
                             <span>{{ lot.event_set.all|length }}</span><a class="link-secondary text-decoration-none"
@@ -82,7 +83,9 @@
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
+
 				<form method="post" action="{% url "genie:create_lot" %}">
+                    {% csrf_token %}
 					<div class="modal-body">
                         <label for="formGroupExampleInput">Lot Name</label>
                         <input type="text" class="form-control" id="lotName" name="lotName" placeholder="Example Lot">
