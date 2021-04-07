@@ -48,6 +48,7 @@
                     <th>Name</th>
                     <th>Address</th>
                     <th width="40%">Events</th>
+					<th></th>
                 </tr>
                 {% for lot in lots %}
                     <tr>
@@ -57,14 +58,14 @@
                             <span>{{ lot.event_set.all|length }}</span><a class="link-secondary text-decoration-none"
                                                                           data-toggle="collapse"
                                                                           href="#eventItems{{ lot.pk }}">
-                            <i class="fas fa-angle-down text-gray"></i></a>
+                            <i class="fas fa-angle-down text-gray"></i></a> <a class="btn btn-link ml-5" href="{% url 'genie:assign_events' %}?lot={{ lot.pk }}"><i class="fas fa-plus"></i> Assign Event</a>
                             <div id="eventItems{{ lot.pk }}" class="collapse">
                                 {% for event in lot.event_set.all %}
                                     <strong style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 15ch; display:inline-block" data-toggle="tooltip" title="{{ event.name }}"> {{ event.name }}</strong> <span style="white-space: nowrap; overflow: hidden; display:inline-block"> {{ event.startTime|date:'M d Y h:i A' }}</span><br>
                                 {% endfor %}
-                            <a class="btn btn-link" href="{% url 'genie:assign_events' %}?lot={{ lot.pk }}"><i class="fas fa-plus"></i> Assign Event</a>
                             </div>
                         </td>
+						<td><a href="{% url "genie:cancel_reservation" %}?reservation={{ reservation.pk }}" class="btn btn-link text-danger"><i class="fas fa-times"></i> Cancel</a></td>
                     </tr>
                 {% endfor %}
             </table>
