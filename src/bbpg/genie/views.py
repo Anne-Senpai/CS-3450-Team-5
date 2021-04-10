@@ -212,6 +212,8 @@ def delete_lot(request):
 
     return redirect("genie:index")
 
-
+@login_required
+def update_area(request):
+    pass
 
 

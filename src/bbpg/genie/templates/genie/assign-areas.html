@@ -42,7 +42,7 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<form action="{% url update_area %}" method="post">
+			<form action="{% url "genie:update_area" %}" method="post">
 				<div class="modal-body">
 					<label for="area_{{ area.pk }}">Area ID: </label><input type="text" class="form-control" value="{{ area.areaIdentifier }}" id="area_{{ area.pk }}">
 					<label for="capacity_{{ area.pk }}">Capacity: </label><input type="number" class="form-control" value="{{ area.capacity }}" id="capacity_{{ area.pk }}">

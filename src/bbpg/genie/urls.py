@@ -21,6 +21,7 @@ urlpatterns = [
 	path("cancel_reservation/", views.cancel_reservation, name="cancel_reservation"),
 	path("create_lot/", views.create_lot, name="create_lot"),
 	path("assign_areas/", views.assign_areas, name="assign_areas"),
-	path("delete_lot/", views.delete_lot, name="delete_lot")
+	path("delete_lot/", views.delete_lot, name="delete_lot"),
+	path("update_area/", views.update_area, name="update_area"),
 
 ]
