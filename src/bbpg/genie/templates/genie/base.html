@@ -37,7 +37,7 @@
 				</li>
 				{% endif %}
 			</ul>
-			<ul class="navbar-nav ml-auto mr-3">
+			<ul class="navbar-nav ml-md-auto mr-3">
 				<a class="nav-link" style="color:rgba(255,255,255, 1);" href="{% url 'genie:logout' %}">Logout <i class="fas fa-sign-out-alt"></i></a>
 			</ul>
 		</div>
@@ -69,17 +69,17 @@
 
 		<div class="w-100 d-flex flex-row justify-content-between">
 			<div>
-				<img class="float-left ml-0" height="250px;" src="{% static 'genie/footer_left.png' %}" />
+				<img class="float-left ml-0 d-none d-md-flex" height="250px;" src="{% static 'genie/footer_left.png' %}" alt="road graphic"/>
 			</div>
 
-			<div class="mb-4 mb-md-0 mt-5">
+			<div class="mb-4 mb-md-0 mt-5 col">
 				<h5 class="text-left text-uppercase">Contact Information</h5>
 				<p class="text-left mb-2">34 USU Street<br />Logan, UT 88888</p>
 				<p class="text-left mb-2"><i class="fas fa-phone fa-fw fa-sm"></i> (111)111-1111</p>
 				<p class="text-left"><i class="fas fa-envelope fa-fw fa-sm"></i> <a href="#">teamArthur@email.com</a></p>
 			</div>
 
-			<div class="mb-4 mb-md-0 mt-5">
+			<div class="mb-4 mb-md-0 mt-5 col">
 				<h5 class="text-left text-uppercase">About Us</h5>
 				<p class="text-left mb-2">Group 5 (Team Arthur)</p>
 				<p class="text-left mb-2">Makalee<br />Derek<br />Anne<br />Kate</p>
@@ -87,13 +87,13 @@
 			</div>
 
 			<div>
-				<img class="float-right mr-5" style="margin-top: -100px;" src="{% static 'genie/footer_right.png' %}" />
+				<img class="float-right mr-5 d-none d-md-flex" style="margin-top: -100px;" src="{% static 'genie/footer_right.png' %}" alt="BBPG logo" />
 			</div>
 		</div>
 	</div>
 
 	<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-		Special Thanks to Arthur <img class="d-inline" width="25px" src="{% static 'genie/arthur.png' %}"/> BBPG Mascot
+		Special Thanks to Arthur <img class="d-inline" width="25px" src="{% static 'genie/arthur.png' %}" alt="arthur's face"/> BBPG Mascot
 	</div>
 </footer>
 {% endif %}

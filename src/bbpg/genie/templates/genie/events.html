@@ -5,27 +5,29 @@
 {% block content %}
 <h1>Upcoming Events</h1>
 <p class="lead">Select from the events listed below to find and reserve a parking space.</p>
-    {% if user.profile.is_supervisor %}
+{% if user.profile.is_supervisor %}
 <button class="p mb-3 btn btn-primary"  data-toggle="modal" data-target="#new-event-modal"><i class="fa-fw fas fa-plus"></i> New Event</button>
-    {% endif %}
-<div class="row">
-	{% for event in events %}
-	<div class="col-lg-6">
-		<div class="media d-flex align-items-center mt-3 mt-lg-0 mb-3">
-			<div class="mr-3 bg-info p-3 px-4 text-center text-white" style="width: 125px;">
-				<div class="p-0 m-0 h1 line-height-base text-white">{{ event.startTime|date:'d'}}
-					<div class="p-0 m-0 h5 line-height-base text-white text-uppercase"><small>{{ event.startTime|date:'M' }} {{ event.startTime|date:'Y' }}</small></div></div>
-				</div>
-				<div class="media-body">
-					<h3 class="h5 mt-0 mb-1">
-						<a href="{% url 'genie:lots' %}?event={{ event.pk }}" class="text-shrink-1 text-info">{{ event.name }}</a>
-					</h3>
-					<p class="m-0">{{ event.startTime|date:'D' }} | <strong>at {{ event.startTime|date:'h:i A'}}</strong></p>
-					<p class="m-0"><i class="fas fa-map-marker-alt fa-fw fa-sm text-primary">&nbsp;</i>{{ event.address }}</p>
+{% endif %}
+<div class="pb-5">
+	<div class="row my-5">
+		{% for event in events %}
+		<div class="col-lg-6 col-xl-4">
+			<div class="media d-flex align-items-center my-3 shadow-sm border rounded popcard">
+				<div class="mr-3 bg-info p-3 px-4 text-center text-white" style="width: 123px; height: 120px;">
+					<div class="p-0 m-0 h1 line-height-base text-white">{{ event.startTime|date:'d'}}
+						<div class="p-0 m-0 h5 line-height-base text-white text-uppercase"><small>{{ event.startTime|date:'M' }} {{ event.startTime|date:'Y' }}</small></div></div>
+					</div>
+					<div class="media-body">
+						<h3 class="h5 mt-0 mb-1">
+							<a href="{% url 'genie:lots' %}?event={{ event.pk }}" class="text-shrink-1 text-info stretched-link">{{ event.name }}</a>
+						</h3>
+						<p class="m-0">{{ event.startTime|date:'D' }} | <strong>at {{ event.startTime|date:'h:i A'}}</strong></p>
+						<p class="m-0"><i class="fas fa-map-marker-alt fa-fw fa-sm text-primary">&nbsp;</i>{{ event.address }}</p>
+					</div>
 				</div>
 			</div>
+			{% endfor %}
 		</div>
-		{% endfor %}
 	</div>
 	<div class="modal fade" id="new-event-modal" tabindex="-1" role="dialog" aria-labelledby="new-event-modal" aria-hidden="true">
 		<div class="modal-dialog" role="document">
@@ -38,23 +40,23 @@
 				</div>
 				<form>
 					<div class="modal-body">
-                        <label for="eventName">Event Name</label>
-                        <input type="text" class="form-control" id="eventName" placeholder="Big Cool Event">
+						<label for="eventName">Event Name</label>
+						<input type="text" class="form-control" id="eventName" placeholder="Big Cool Event">
 						<br />
 						<label for="eventDate">Date</label>
-                        <input type="date" class="form-control" id="eventDate" placeholder="mm/dd/yyyy">
+						<input type="date" class="form-control" id="eventDate" placeholder="mm/dd/yyyy">
 						<br />
 						<label for="eventTime">Start Time</label>
-                        <input type="time" class="form-control" id="startTime" placeholder="hh:mm">
+						<input type="time" class="form-control" id="startTime" placeholder="hh:mm">
 						<br />
 						<label for="eventTime">End Time</label>
-                        <input type="time" class="form-control" id="endTime" placeholder="hh:mm">
+						<input type="time" class="form-control" id="endTime" placeholder="hh:mm">
 						<br />
-                        <label for="address">Address</label>
-                        <input type="text" class="form-control" id="address" placeholder="1234 Main St, Logan, UT">
-					<button class="btn btn-info float-right mt-4">Create</button>
-                </form>
+						<label for="address">Address</label>
+						<input type="text" class="form-control" id="address" placeholder="1234 Main St, Logan, UT">
+						<button class="btn btn-info float-right mt-4">Create</button>
+					</form>
+				</div>
 			</div>
 		</div>
-	</div>
-	{% endblock %}
+		{% endblock %}
