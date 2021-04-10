@@ -73,9 +73,9 @@
 					<td class="align-middle pl-3"><a href="{% url 'genie:assign_areas' %}?lot={{ lot.pk }}">{{ lot.name }}</a></td>
 					<td class="align-middle">{{ lot.address }}</td>
 					<td>
-						<span><a class="link-secondary text-decoration-none"
+						<span><a class="drop-toggle link-secondary text-decoration-none"
 							data-toggle="collapse"
-							href="#eventItems{{ lot.pk }}"><i class="fas fa-angle-down"></i> Assigned</a> ({{ lot.event_set.all|length }})</span>
+							href="#eventItems{{ lot.pk }}" onclick="dropToggle(this)"><i class="fas fa-angle-down"></i> Assigned</a> ({{ lot.event_set.all|length }})</span>
 							<a class="btn btn-link ml-4" href="{% url 'genie:assign_events' %}?lot={{ lot.pk }}"><i class="fas fa-plus"></i> Assign Event</a>
 							<div id="eventItems{{ lot.pk }}" class="collapse">
 								{% for event in lot.event_set.all %}
@@ -117,6 +117,17 @@
 
 
 			<script>
+				function dropToggle (elmnt) {
+					if (elmnt.firstChild.classList.contains('fa-angle-down')) {
+						elmnt.firstChild.classList.remove("fa-angle-down");
+						elmnt.firstChild.classList.add("fa-angle-up");
+					}
+					else {
+						elmnt.firstChild.classList.remove("fa-angle-up");
+						elmnt.firstChild.classList.add("fa-angle-down");
+					}
+				}
+
                 {% if messages %}
 				$(document).ready(function(){
 					$('.toast').toast('show');
