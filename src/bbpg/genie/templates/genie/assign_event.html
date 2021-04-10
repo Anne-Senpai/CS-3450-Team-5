@@ -4,33 +4,54 @@
 {% block content %}
 {% csrf_token %}
 
-    <h1>Edit Assigned Events</h1>
-    <p class="lead"><strong>Lot:</strong> {{ lot.name }}</p>
-    <a class="lead" href="{% url 'genie:index' %}"><i class="fa-fw fas fa-arrow-left mb-4"></i> return to dashboard</a>
-    {% for event in events %}
-    <div class="media d-flex align-items-center mt-5 mt-lg-0 mb-3">
-        <div class="mr-3 bg-info p-3 px-4 text-center text-white" style="width: 125px;">
-            <div class="p-0 m-0 h1 line-height-base text-white">{{ event.startTime|date:'d'}}
-                <div class="p-0 m-0 h5 line-height-base text-white text-uppercase"><small>{{ event.startTime|date:'M' }} {{ event.startTime|date:'Y' }}</small></div></div>
-        </div>
-        <div class="media-body">
-            <h3 class="h5 mt-0 mb-1">
-                <a href="{% url 'genie:lots' %}?event={{ event.pk }}" class="text-shrink-1 text-info">{{ event.name }}</a>
-            </h3>
-            <p class="m-0">{{ event.startTime|date:'D' }} | <strong>at {{ event.startTime|date:'h:i A'}}</strong></p>
-            <p class="m-0"><i class="fas fa-map-marker-alt fa-fw fa-sm text-primary">&nbsp;</i>{{ event.address }}</p>
-            <p class="m-0">Assign Lot: <input class="toggle-switch" type="checkbox" {% if lot in event.parkingLots.all%}checked{% endif %} id="flexSwitch" data-event_id="{{ event.pk }}" onclick="assign_event(this)"/></p>
-        </div>
-    </div>
-    {% endfor %}
+<h1>Edit Assigned Events</h1>
+<p class="lead"><strong>Lot:</strong> {{ lot.name }}</p>
+<a class="lead" href="{% url 'genie:index' %}"><i class="fa-fw fas fa-arrow-left mb-4"></i> return to dashboard</a>
+<div class="row mb-5">
+	{% for event in events %}
+	<div class="col-lg-6 col-xl-4">
+		<div class="media d-flex align-items-center my-3 shadow-sm border rounded">
+			<div class="mr-3 bg-info p-3 px-4 text-center text-white" style="width: 123px; height: 130px;">
+				<div class="p-0 m-0 h1 line-height-base text-white">{{ event.startTime|date:'d'}}
+					<div class="p-0 m-0 h5 line-height-base text-white text-uppercase"><small>{{ event.startTime|date:'M' }} {{ event.startTime|date:'Y' }}</small></div></div>
+				</div>
+				<div class="media-body">
+					<h3 class="h5 mt-0 mb-1">
+						<a href="{% url 'genie:lots' %}?event={{ event.pk }}" class="text-shrink-1 text-info">{{ event.name }}</a>
+					</h3>
+					<p class="m-0">{{ event.startTime|date:'D' }} | <strong>at {{ event.startTime|date:'h:i A'}}</strong></p>
+					<p class="m-0"><i class="fas fa-map-marker-alt fa-fw fa-sm text-primary">&nbsp;</i>{{ event.address }}</p>
+					<p class="m-0 mt-2">
+						<label class="switch">
+							<input type="checkbox" {% if lot in event.parkingLots.all%}checked{% endif %} data-event_id="{{ event.pk }}" onclick="assign_event(this)">
+							<span class="slider round"></span>
+						</label>
+						<span class="pb-1">&nbsp;{% if lot in event.parkingLots.all%}Assigned{% else %}Assign{% endif %}</span></p>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+		<br />
 
 
-    <script>
-        var lot_id = {{ lot.pk }}
+		<script>
+			var lot_id = {{ lot.pk }}
 
-        var assign_event = function(toggle) {
-            console.log(toggle)
-            return fetch("/assign_events/assign_event/?lot=" + lot_id + "&event=" + toggle.dataset.event_id)
-        }
-    </script>
-{% endblock %}
+			var assign_event = function(toggle) {
+
+				if (toggle.checked) {
+					toggle.parentElement.nextElementSibling.innerHTML = "&nbsp;Assigned";
+				}
+				else {
+					toggle.parentElement.nextElementSibling.innerHTML = "&nbsp;Assign";
+				}
+
+				// console.log(toggle)
+				return fetch("/assign_events/assign_event/?lot=" + lot_id + "&event=" + toggle.dataset.event_id)
+
+
+
+			}
+		</script>
+		{% endblock %}
