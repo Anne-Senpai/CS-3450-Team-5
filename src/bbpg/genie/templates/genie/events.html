@@ -37,12 +37,12 @@
 						</h3>
 						<p class="m-0">{{ event.startTime|date:'D' }} | <strong>at {{ event.startTime|date:'h:i A'}}</strong></p>
 						<p class="m-0"><i class="fas fa-map-marker-alt fa-fw fa-sm text-primary">&nbsp;</i>{{ event.address }}</p>
-
                     </div>
-                    {% if user.profile.is_supervisor %}
-                        <button type="button" style="z-index: 2" class="ml-4 pt-4 mt-0 btn btn-link float-right align-self-end" data-toggle="modal" data-target="#edit-event_{{ event.pk }}"><i class="fas fa-pencil-alt"></i> Edit</button>
-                    {% endif %}
+
 				</div>
+				{% if user.profile.is_supervisor %}
+					<button type="button" style="z-index: 2; right: 0; bottom: 0;" class="btn btn-link position-absolute mr-3"  data-toggle="modal" data-target="#edit-event_{{ event.pk }}"><i class="fas fa-pencil-alt"></i> Edit</button>
+				{% endif %}
 			</div>
 
 			{% if user.profile.is_supervisor %}
