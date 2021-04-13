@@ -18,8 +18,10 @@
 <h1>User Dashboard</h1>
 <div class="d-none d-xl-block col-lg-6 float-right">
 	<div class="col-lg-3 float-right">
-		<img class="bg-info py-3 px-4 rounded-circle shadow" width="120" src="{% static 'genie/car.png'%}" alt="BBPG logo"/>
+		<div class="bg-info py-3 px-4 rounded-circle shadow d-inline-block" width="130" height="130">
+			<img class="" src="{% static 'genie/car.png'%}" alt="BBPG logo"/>
 		</div>
+	</div>
 	<p class="lead text-right mt-2">The Big Blue Parking Genie is here to serve all of your parking purchasing and posting needs! Reach out to us at <a href="#">bbpg@email.com</a> for support or feedback.</p>
 	</div>
 <p class="lead">Welcome, {{ user.username}}!</p>
