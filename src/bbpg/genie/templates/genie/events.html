@@ -37,11 +37,12 @@
 						</h3>
 						<p class="m-0">{{ event.startTime|date:'D' }} | <strong>at {{ event.startTime|date:'h:i A'}}</strong></p>
 						<p class="m-0"><i class="fas fa-map-marker-alt fa-fw fa-sm text-primary">&nbsp;</i>{{ event.address }}</p>
-					</div>
+
+                    </div>
+                    {% if user.profile.is_supervisor %}
+                        <button type="button" style="z-index: 2" class="ml-4 pt-4 mt-0 btn btn-link float-right align-self-end" data-toggle="modal" data-target="#edit-event_{{ event.pk }}"><i class="fas fa-pencil-alt"></i> Edit</button>
+                    {% endif %}
 				</div>
-				{% if user.profile.is_supervisor %}
-				<button type="button" class="ml-4 pt-4 mt-0 btn btn-link float-right" data-toggle="modal" data-target="#edit-event_{{ event.pk }}"><i class="fas fa-pencil-alt"></i> Edit</button>
-				{% endif %}
 			</div>
 
 			{% if user.profile.is_supervisor %}
@@ -54,27 +55,27 @@
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
-						<form method="post" action="{% url "genie:add_event" %}">
+						<form method="post" action="{% url "genie:update_event" %}?event={{ event.pk }}">
 							{% csrf_token %}
 							<div class="modal-body">
 								<label for="eventName">Event Name</label>
-								<input type="text" class="form-control" id="eventName" name="eventName" placeholder="Big Cool Event">
+								<input type="text" class="form-control" id="eventName_{{ event.pk }}" name="eventName" value="{{ event.name }}" placeholder="Big Cool Event">
 								<br />
 								<label for="eventDate">Date</label>
-								<input type="date" class="form-control" id="eventDate" name="eventDate" placeholder="mm/dd/yyyy">
+								<input type="date" class="form-control" id="eventDate_{{ event.pk }}" name="eventDate" value="{{ event.startTime|date:'Y-m-d' }}" placeholder="mm/dd/yyyy">
 								<br />
 								<label for="startTime">Start Time</label>
-								<input type="time" class="form-control" id="startTime" name="startTime" placeholder="hh:mm">
+								<input type="time" class="form-control" id="startTime_{{ event.pk }}" name="startTime" value="{{ event.startTime|date:'H:i' }}" placeholder="hh:mm">
 								<br />
 								<label for="endTime">End Time</label>
-								<input type="time" class="form-control" id="endTime" name="endTime" placeholder="hh:mm">
+								<input type="time" class="form-control" id="endTime_{{ event.pk }}" name="endTime" value="{{ event.endTime|date:'H:i' }}" placeholder="hh:mm">
 								<br />
 								<label for="address">Address</label>
-								<input type="text" class="form-control" id="address" name="address" placeholder="1234 Main St, Logan, UT">
-								<button class="btn btn-info float-right mt-4">Create</button>
+								<input type="text" class="form-control" id="address_{{ event.pk }}" name="address" value="{{ event.address }}" placeholder="1234 Main St, Logan, UT">
+								<button class="btn btn-info float-right mt-4">Save Changes</button>
 							</div>
 						</form>
-						<p class="text-center pt-3"><a href="{% url "genie:delete_event" %}?event={{ event.pk }}" class=" text-danger"><i class="fas fa-times"></i> Delete this area</a></p>
+						<p class="text-center pt-3"><a href="{% url "genie:delete_event" %}?event={{ event.pk }}" class=" text-danger"><i class="fas fa-times"></i> Delete this event</a></p>
 					</div>
 				</div>
 			</div>
@@ -115,11 +116,11 @@
 		</div>
 	</div>
 
-	<scrip>
+	<script>
 		{% if messages %}
 		$(document).ready(function(){
 			$('.toast').toast('show');
 		});
 		{% endif %}
-	</scrip>
+	</script>
 	{% endblock %}
