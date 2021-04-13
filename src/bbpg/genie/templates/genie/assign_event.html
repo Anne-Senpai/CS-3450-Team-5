@@ -47,7 +47,6 @@
 					toggle.parentElement.nextElementSibling.innerHTML = "&nbsp;Assign";
 				}
 
-				// console.log(toggle)
 				return fetch("/assign_events/assign_event/?lot=" + lot_id + "&event=" + toggle.dataset.event_id)
 
 

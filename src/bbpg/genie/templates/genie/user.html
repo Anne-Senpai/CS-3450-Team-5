@@ -10,7 +10,6 @@
 				<th>Username</th>
 				<th>Permissions</th>
 				<th>Balance</th>
-				<th>Assigned Lots</th>
 			</tr>
             {% for user in users %}
 			<tr>
@@ -18,22 +17,21 @@
 				<td>
 					<div class="form-check-inline">
 						<label class="form-check-label">
-							<input type="checkbox" class="form-check-input"  value="">Manager
+							<input type="checkbox" data-user_id="{{ user.pk }}" class="form-check-input" {% if user.profile.is_manager %}checked{% endif %} onclick="assign_manager(this)" value="">Manager
 						</label>
 					</div>
 					<div class="form-check-inline">
 						<label class="form-check-label">
-							<input type="checkbox" class="form-check-input" value="">Attendant
+							<input type="checkbox" class="form-check-input" data-user_id="{{ user.pk }}" value="" {% if user.profile.is_attendant %}checked{% endif %} onclick="assign_attendant(this)">Attendant
 						</label>
 					</div>
 					<div class="form-check-inline">
 						<label class="form-check-label">
-							<input type="checkbox" class="form-check-input" value="">Supervisor
+							<input type="checkbox" class="form-check-input" data-user_id="{{ user.pk }}" value="" {% if user.profile.is_supervisor %}checked{% endif %} onclick="assign_supervisor(this)">Supervisor
 						</label>
 					</div>
 				</td>
-				<td>$45</td>
-				<td>7</td>
+				<td>${{ user.profile.balance }}</td>
 			</tr>
             {% endfor %}
 		</table></div>
@@ -41,4 +39,16 @@
 		<br />
 	</div>
 </div>
+<script>
+    var assign_supervisor = function(toggle) {
+        return fetch("/assign_supervisor/?user=" + toggle.dataset.user_id)
+    }
+    var assign_manager = function(toggle) {
+        return fetch("/assign_manager/?user=" + toggle.dataset.user_id)
+    }
+
+    var assign_attendant = function(toggle) {
+        return fetch("/assign_attendant/?user=" + toggle.dataset.user_id)
+    }
+</script>
 {% endblock %}

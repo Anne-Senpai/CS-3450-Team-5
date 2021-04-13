@@ -324,6 +324,33 @@ def add_event(request):
 
 
 @login_required
+def update_event(request):
+    if request.user.profile.is_supervisor():
+        params = request.POST
+        if "event" in request.GET:
+            event_pk = int(unquote(request.GET["event"]))
+            event = Event.objects.get(pk=event_pk)
+            name = params["eventName"]
+            date = params["eventDate"]
+            startTime = params["startTime"]
+            endTime = params["endTime"]
+            address = params["address"]
+
+            startDatetime = datetime.datetime.strptime(f"{date} {startTime}", '%Y-%m-%d %H:%M')
+            endDatetime = datetime.datetime.strptime(f"{date} {endTime}", '%Y-%m-%d %H:%M')
+
+            event.name = name
+            event.address = address
+            event.startTime = startDatetime
+            event.endTime = endDatetime
+
+            event.save()
+
+            return redirect("genie:events")
+    return redirect("genie:index")
+
+
+@login_required
 def delete_event(request):
     if request.user.profile.is_supervisor():
         params = request.GET
@@ -349,7 +376,7 @@ def assign_supervisor(request):
         if "user" in params:
             user_id = int(unquote(params["user"]))
             user_rec = User.objects.get(pk=user_id)
-            if user.profile.is_supervisor():
+            if user_rec.profile.is_supervisor():
                 user_rec.user_permissions.remove(perm)
             else:
                 user_rec.user_permissions.add(perm)
@@ -366,7 +393,7 @@ def assign_manager(request):
         if "user" in params:
             user_id = int(unquote(params["user"]))
             user_rec = User.objects.get(pk=user_id)
-            if user.profile.is_manager():
+            if user_rec.profile.is_manager():
                 user_rec.user_permissions.remove(perm)
             else:
                 user_rec.user_permissions.add(perm)
@@ -383,7 +410,7 @@ def assign_attendant(request):
         if "user" in params:
             user_id = int(unquote(params["user"]))
             user_rec = User.objects.get(pk=user_id)
-            if user.profile.is_attendant():
+            if user_rec.profile.is_attendant():
                 user_rec.user_permissions.remove(perm)
             else:
                 user_rec.user_permissions.add(perm)

@@ -24,11 +24,12 @@ urlpatterns = [
 	path("delete_lot/", views.delete_lot, name="delete_lot"),
 	path("update_area/", views.update_area, name="update_area"),
 	path("add_area/", views.add_area, name="add_area"),
-	path("delete_area", views.delete_area, name="delete_area"),
-	path("add_event", views.add_event, name="add_event"),
-	path("delete_event", views.delete_event, name="delete_event"),
-	path("assign_supervisor", views.assign_supervisor, name="assign_supervisor"),
-	path("assign_manager", views.assign_manager, name="assign_manager"),
-	path("assign_attendant", views.assign_attendant, name="assign_attendant")
+	path("delete_area/", views.delete_area, name="delete_area"),
+	path("add_event/", views.add_event, name="add_event"),
+	path("update_event/", views.update_event, name="update_event"),
+	path("delete_event/", views.delete_event, name="delete_event"),
+	path("assign_supervisor/", views.assign_supervisor, name="assign_supervisor"),
+	path("assign_manager/", views.assign_manager, name="assign_manager"),
+	path("assign_attendant/", views.assign_attendant, name="assign_attendant")
 
 ]
