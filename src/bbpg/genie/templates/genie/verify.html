@@ -1,0 +1,24 @@
+{% extends 'genie/base.html' %}
+{% load static %}
+{% block title %}Verified!{% endblock %}
+{% block content %}
+
+<div class="row justify-content-center">
+	<div class="col-lg-5 my-4">
+		<div class="card my-3 w-100">
+			<div class="card-body">
+				<h2 class="h3 text-primary text-center">Verification Successful!</h2>
+				<p class="text-center text-success my-3"><i class="far fa-check-circle fa-7x"><!--&nbsp;--></i></p>
+				<p>Reservation #: <span id="res_num"></span></p>
+				<p>Reservation Date: <span id="res_date"></span></p>
+				<p>Reserved By: <span id="res_user"></span></p>
+				<p>Parking Lot: <span id="res_lot"></span></p>
+				<p>Parking Spot: <span id="res_spot"></span></p>
+				<a href="verification.html">Check another reservation</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}
