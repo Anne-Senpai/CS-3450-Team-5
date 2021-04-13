@@ -3,18 +3,20 @@
 {% block title %}Login{% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
-<div class="w-100 vh-100" style="background: url('{% static "genie/snazzy-background.png" %}'); background-repeat: repeat; background-size:30%;">
-	<div class="row justify-content-center">
-		<div class="col-9 col-lg-5 mt-5">
-			<div class="card mt-5 shadow-lg p-4">
-				<div class="card-body">
-					<h1 class="h3 mb-3">Login</h1>
-					<form method="POST">
-						{% csrf_token %}
-						{{ form|crispy }}
-						Don't have an account? <a href="{% url "genie:register" %}" target="blank"><strong>register here</strong></a><br/><br/>
-						<button class="btn btn-info" type="submit">Login</button>
-					</form>
+<div class="w-100 h-100" style="background-image: linear-gradient(#226BAA, #0F2439);">
+	<div class="w-100 vh-100" style="background: url('{% static "genie/white-bg.png" %}'); background-repeat: repeat; background-size:75%;">
+		<div class="row justify-content-center"">
+			<div class="col-9 col-lg-5 mt-5">
+				<div class="card mt-5 shadow-lg p-4">
+					<div class="card-body">
+						<h1 class="h3 mb-3">Login</h1>
+						<form method="POST">
+							{% csrf_token %}
+							{{ form|crispy }}
+							Don't have an account? <a href="{% url "genie:register" %}" target="blank"><strong>register here</strong></a><br/><br/>
+							<button class="btn btn-info" type="submit">Login</button>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>
