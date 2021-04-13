@@ -43,12 +43,13 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<form action="{% url "genie:update_area" %}" method="post">
+			<form action="{% url "genie:update_area" %}?area={{ area.pk }}" method="post">
+                {% csrf_token %}
 				<div class="modal-body">
-					<label for="area_{{ area.pk }}">Area ID: </label><input type="text" class="form-control" value="{{ area.areaIdentifier }}" id="area_{{ area.pk }}">
-					<label for="capacity_{{ area.pk }}">Capacity: </label><input type="number" class="form-control" value="{{ area.capacity }}" id="capacity_{{ area.pk }}">
-					<label for="type_{{ area.pk }}">Spot Type: </label><input type="text" class="form-control" value="{{ area.type }}" id="type_{{ area.pk }}">
-					<label for="price_{{ area.pk }}">Spot Price: $</label><input type="number" class="form-control" value="{{ area.price }}" id="price_{{ area.pk }}">*
+					<label for="area_{{ area.pk }}">Area ID: </label><input type="text" class="form-control" value="{{ area.areaIdentifier }}" name="area" id="area_{{ area.pk }}">
+					<label for="capacity_{{ area.pk }}">Capacity: </label><input type="number" class="form-control" value="{{ area.capacity }}" name="capacity" id="capacity_{{ area.pk }}">
+					<label for="type_{{ area.pk }}">Spot Type: </label><input type="text" class="form-control" value="{{ area.type }}" name="type" id="type_{{ area.pk }}">
+					<label for="price_{{ area.pk }}">Spot Price: $</label><input type="number" class="form-control" value="{{ area.price }}" name="price" id="price_{{ area.pk }}">*
 					<p><small>*BBPG will take a cut of 15% automatically when a purchase is made</small></p>
 				</div>
 				<div class="modal-footer">
@@ -72,16 +73,17 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<form>
+			<form method="post" action="{% url "genie:add_area" %}?lot={{ lot.pk }}">
+                {% csrf_token %}
 				<div class="modal-body">
-					<label for="new_area">Area ID: </label><input type="text" class="form-control" id="new_area">
-					<label for="new_capacity">Capacity: </label><input type="number" class="form-control" id="new_capacity">
-					<label for="new_type">Spot Type: </label><input type="text" class="form-control" id="new_type">
-					<label for="new_price">Spot Price: $</label><input type="number" class="form-control" id="new_price">*
+					<label for="new_area">Area ID: </label><input type="text" class="form-control" name="new_area" id="new_area">
+					<label for="new_capacity">Capacity: </label><input type="number" class="form-control" name="new_capacity" id="new_capacity">
+					<label for="new_type">Spot Type: </label><input type="text" class="form-control" name="new_type" id="new_type">
+					<label for="new_price">Spot Price: $</label><input type="number" class="form-control" name="new_price" id="new_price">*
 					<p><small>*BBPG will take a cut of 15% automatically when a purchase is made</small></p>
 				</div>
 				<div class="modal-footer">
-					<a class="btn btn-block btn-outline-success mt-2" href="#"><i class="fas fa-fw fa-plus"></i> Add Area</a>
+                    <input type="submit" class="btn btn-block btn-outline-success mt-2 mb-3" value="Add Area"/>
 					<button type="button" data-dismiss="modal" class="btn btn-block btn-outline-danger mt-2"><i class="fas fa-fw fa-times"></i> Cancel</button>
 				</div>
 			</form>

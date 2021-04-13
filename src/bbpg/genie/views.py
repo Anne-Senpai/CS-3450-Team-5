@@ -158,6 +158,10 @@ def make_reservation(request):
             prof.balance -= area.price
             prof.save()
 
+            owner = area.parkingLot.owner.profile
+            owner.balance += area.price * .85
+            owner.save()
+
     return redirect("genie:index")
 
 @login_required
@@ -213,7 +217,40 @@ def delete_lot(request):
     return redirect("genie:index")
 
 @login_required
+def add_area(request):
+    params = request.POST
+    if "lot" in request.GET:
+        lot_pk = int(unquote(request.GET["lot"]))
+        lot = ParkingLot.objects.get(pk=lot_pk)
+        area_id = unquote(params["new_area"])
+        capacity = unquote(params["new_capacity"])
+        type = unquote(params["new_type"])
+        price = float(unquote(params["new_price"]))
+
+        area = LotArea(areaIdentifier=area_id, capacity=capacity, type=type, price=price, parkingLot=lot)
+
+        area.save()
+        return HttpResponsePermanentRedirect(f"/assign_areas?lot={lot.pk}")
+    return redirect("genie:index")
+
+@login_required
 def update_area(request):
-    pass
+    params = request.POST
+    if "area" in request.GET:
+        area_pk = int(unquote(request.GET["area"]))
+        area_id = unquote(params["area"])
+        capacity = unquote(params["capacity"])
+        type = unquote(params["type"])
+        price = float(unquote(params["price"]))
+
+        area = LotArea.objects.get(pk=area_pk)
+        area.areaIdentifier = area_id
+        area.capacity = capacity
+        area.type = type
+        area.price = price
+
+        area.save()
+        return HttpResponsePermanentRedirect(f"/assign_areas?lot={area.parkingLot.pk}")
+    return redirect("genie:index")
 
 
