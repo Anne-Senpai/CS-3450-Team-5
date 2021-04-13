@@ -6,7 +6,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from genie.models import Event, Reservation, ParkingLot, LotArea, Profile
 from genie.forms import RegisterForm
 from django.shortcuts import get_object_or_404
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission
 from urllib.parse import unquote
 import datetime
 from django.contrib.auth.views import auth_logout
@@ -64,7 +64,9 @@ def reservation(request):
 
 @login_required
 def user(request):
-    return render(request, 'genie/user.html')
+    if request.user.profile.is_supervisor():
+        return render(request, 'genie/user.html')
+    return redirect("genie:index")
 
 
 def sample(request):
@@ -117,28 +119,33 @@ def add_funds(request):
 
 @login_required
 def assign_events(request):
-    params = request.GET
-    if "lot" in params:
-        lot_id = int(unquote(params["lot"]))
-        lot = ParkingLot.objects.get(pk=lot_id)
-        evts = Event.objects.filter(startTime__gt=datetime.datetime.now())
-        return render(request, "genie/assign_event.html", {"events": evts, "lot": lot})
+    if request.user.profile.is_manager() or request.user.profile.is_supervisor():
+        params = request.GET
+        if "lot" in params:
+            lot_id = int(unquote(params["lot"]))
+            lot = ParkingLot.objects.get(pk=lot_id)
+            if request.user == lot.owner:
+                evts = Event.objects.filter(startTime__gt=datetime.datetime.now())
+                return render(request, "genie/assign_event.html", {"events": evts, "lot": lot})
 
 
 @login_required
 def assign_event(request):
+
     params = request.GET
     res = {"success": False}
-    if "event" in params and "lot" in params:
-        event_id = int(unquote(params["event"]))
-        lot_id = int(unquote(params["lot"]))
-        event = Event.objects.get(pk=event_id)
-        lot = ParkingLot.objects.get(pk=lot_id)
-        if lot in event.parkingLots.all():
-            event.parkingLots.remove(lot)
-        else:
-            event.parkingLots.add(lot)
-        res["success"] = True
+    if request.user.profile.is_manager() or request.user.profile.is_supervisor():
+        if "event" in params and "lot" in params:
+            event_id = int(unquote(params["event"]))
+            lot_id = int(unquote(params["lot"]))
+            event = Event.objects.get(pk=event_id)
+            lot = ParkingLot.objects.get(pk=lot_id)
+            if request.user == lot.owner:
+                if lot in event.parkingLots.all():
+                    event.parkingLots.remove(lot)
+                else:
+                    event.parkingLots.add(lot)
+                res["success"] = True
 
     return JsonResponse(res)
 
@@ -176,146 +183,210 @@ def cancel_reservation(request):
     if "reservation" in params:
         reserve_id = int(unquote(params["reservation"]))
         reserve = Reservation.objects.get(pk=reserve_id)
-        refund = reserve.lotArea.price
-        reserve.delete()
-        prof = request.user.profile
-        prof.balance += refund
-        prof.save()
+        if request.user == reservation.user:
+            refund = reserve.lotArea.price
+            reserve.delete()
+            prof = request.user.profile
+            prof.balance += refund
+            prof.save()
 
-        owner = reserve.lotArea.parkingLot.owner.profile
-        owner.balance -= reserve.lotArea.price * .85
-        owner.save()
+            owner = reserve.lotArea.parkingLot.owner.profile
+            owner.balance -= reserve.lotArea.price * .85
+            owner.save()
 
     return redirect("genie:index")
 
 
 @login_required
 def create_lot(request):
-    params = request.POST
-    lot_name = params['lotName']
-    lot_address = params['lotAddress']
+    if request.user.profile.is_manager() or request.user.profile.is_supervisor():
+        params = request.POST
+        lot_name = params['lotName']
+        lot_address = params['lotAddress']
 
-    new_lot = ParkingLot(name=lot_name, address=lot_address, owner=request.user)
-    new_lot.save()
+        new_lot = ParkingLot(name=lot_name, address=lot_address, owner=request.user)
+        new_lot.save()
 
-    return HttpResponsePermanentRedirect(f"/assign_areas?lot={new_lot.pk}")
+        return HttpResponsePermanentRedirect(f"/assign_areas?lot={new_lot.pk}")
+    return redirect("genie:index")
 
 
 @login_required
 def assign_areas(request):
-    params = request.GET
-    if "lot" in params:
-        lot_record = ParkingLot.objects.get(pk=int(unquote(params["lot"])))
-        areas = lot_record.lotarea_set.all()
+    if request.user.profile.is_manager() or request.user.profile.is_supervisor():
+        params = request.GET
+        if "lot" in params:
+            lot_record = ParkingLot.objects.get(pk=int(unquote(params["lot"])))
+            if request.user == lot_record.owner:
+                areas = lot_record.lotarea_set.all()
 
-        return render(request, "genie/assign-areas.html", {"lot": lot_record, "areas": areas})
-
+                return render(request, "genie/assign-areas.html", {"lot": lot_record, "areas": areas})
+    return redirect("genie:index")
 
 @login_required
 def delete_lot(request):
-    params = request.GET
+    if request.user.profile.is_manager() or request.user.profile.is_supervisor():
+        params = request.GET
 
-    if "lot" in params:
-        lot_id = int(unquote(params["lot"]))
-        lot = ParkingLot.objects.get(pk=lot_id)
-        reservations = Reservation.objects.filter(lotArea__parkingLot=lot).all()
-        if not reservations:
-            lot.delete()
-        else:
-            messages.error(request, f"Cannot delete lot {lot.name}. Reservations for this lot have already been made.", "error")
+        if "lot" in params:
+            lot_id = int(unquote(params["lot"]))
+            lot = ParkingLot.objects.get(pk=lot_id)
+            if request.user == lot.owner:
+                reservations = Reservation.objects.filter(lotArea__parkingLot=lot).all()
+                if not reservations:
+                    lot.delete()
+                else:
+                    messages.error(request, f"Cannot delete lot {lot.name}. Reservations for this lot have already been made.", "error")
 
     return redirect("genie:index")
 
 
 @login_required
 def add_area(request):
-    params = request.POST
-    if "lot" in request.GET:
-        lot_pk = int(unquote(request.GET["lot"]))
-        lot = ParkingLot.objects.get(pk=lot_pk)
-        area_id = unquote(params["new_area"])
-        capacity = unquote(params["new_capacity"])
-        type = unquote(params["new_type"])
-        price = float(unquote(params["new_price"]))
+    if request.user.profile.is_manager() or request.user.profile.is_supervisor():
+        params = request.POST
+        if "lot" in request.GET:
+            lot_pk = int(unquote(request.GET["lot"]))
+            lot = ParkingLot.objects.get(pk=lot_pk)
+            if request.user == lot.owner:
+                area_id = unquote(params["new_area"])
+                capacity = unquote(params["new_capacity"])
+                type = unquote(params["new_type"])
+                price = float(unquote(params["new_price"]))
 
-        area = LotArea(areaIdentifier=area_id, capacity=capacity, type=type, price=price, parkingLot=lot)
+                area = LotArea(areaIdentifier=area_id, capacity=capacity, type=type, price=price, parkingLot=lot)
 
-        area.save()
-        return HttpResponsePermanentRedirect(f"/assign_areas?lot={lot.pk}")
+                area.save()
+                return HttpResponsePermanentRedirect(f"/assign_areas?lot={lot.pk}")
     return redirect("genie:index")
 
 
 @login_required
 def update_area(request):
-    params = request.POST
-    if "area" in request.GET:
-        area_pk = int(unquote(request.GET["area"]))
-        area_id = unquote(params["area"])
-        capacity = unquote(params["capacity"])
-        type = unquote(params["type"])
-        price = float(unquote(params["price"]))
+    if request.user.profile.is_manager() or request.user.profile.is_supervisor():
+        params = request.POST
+        if "area" in request.GET:
+            area_pk = int(unquote(request.GET["area"]))
+            area = LotArea.objects.get(pk=area_pk)
+            if request.user == area.parkingLot.owner:
+                area_id = unquote(params["area"])
+                capacity = unquote(params["capacity"])
+                type = unquote(params["type"])
+                price = float(unquote(params["price"]))
 
-        area = LotArea.objects.get(pk=area_pk)
-        area.areaIdentifier = area_id
-        area.capacity = capacity
-        area.type = type
-        area.price = price
+                area.areaIdentifier = area_id
+                area.capacity = capacity
+                area.type = type
+                area.price = price
 
-        area.save()
-        return HttpResponsePermanentRedirect(f"/assign_areas?lot={area.parkingLot.pk}")
+                area.save()
+                return HttpResponsePermanentRedirect(f"/assign_areas?lot={area.parkingLot.pk}")
     return redirect("genie:index")
 
 
 @login_required
 def delete_area(request):
-    params = request.GET
+    if request.user.profile.is_manager() or request.user.profile.is_supervisor():
+        params = request.GET
 
-    if "area" in params:
-        area_id = int(unquote(params["area"]))
-        area = LotArea.objects.get(pk=area_id)
-        reservations = Reservation.objects.filter(lotArea=area).all()
-        if not reservations:
-            area.delete()
-        else:
-            messages.error(request, f"Cannot delete lot {area.name}. Reservations for this area have already been made.",
-                           "error")
-        return HttpResponsePermanentRedirect(f"/assign_areas?lot={area.parkingLot.pk}")
+        if "area" in params:
+            area_id = int(unquote(params["area"]))
+            area = LotArea.objects.get(pk=area_id)
+            if request.user == area.parkingLot.owner:
+                reservations = Reservation.objects.filter(lotArea=area).all()
+                if not reservations:
+                    area.delete()
+                else:
+                    messages.error(request, f"Cannot delete lot {area.name}. Reservations for this area have already been made.",
+                                   "error")
+                return HttpResponsePermanentRedirect(f"/assign_areas?lot={area.parkingLot.pk}")
     return redirect("genie:index")
 
 
 @login_required
 def add_event(request):
-    params = request.POST
-    name = params["eventName"]
-    date = params["eventDate"]
-    startTime = params["startTime"]
-    endTime = params["endTime"]
-    address = params["address"]
+    if request.user.profile.is_supervisor():
+        params = request.POST
+        name = params["eventName"]
+        date = params["eventDate"]
+        startTime = params["startTime"]
+        endTime = params["endTime"]
+        address = params["address"]
 
-    startDatetime = datetime.datetime.strptime(f"{date} {startTime}", '%Y-%m-%d %H:%M')
-    endDatetime = datetime.datetime.strptime(f"{date} {endTime}", '%Y-%m-%d %H:%M')
+        startDatetime = datetime.datetime.strptime(f"{date} {startTime}", '%Y-%m-%d %H:%M')
+        endDatetime = datetime.datetime.strptime(f"{date} {endTime}", '%Y-%m-%d %H:%M')
 
-    new_event = Event(name=name, address=address, startTime=startDatetime, endTime=endDatetime)
-    new_event.save()
+        new_event = Event(name=name, address=address, startTime=startDatetime, endTime=endDatetime)
+        new_event.save()
 
     return redirect("genie:events")
 
 
 @login_required
 def delete_event(request):
-    params = request.GET
+    if request.user.profile.is_supervisor():
+        params = request.GET
 
-    if "event" in params:
-        event_id = int(unquote(params["event"]))
-        event = Event.objects.get(pk=event_id)
-        reservations = Reservation.objects.filter(event=event).all()
-        if not reservations:
-            event.delete()
-        else:
-            messages.error(request, f"Cannot delete lot {event.name}. Reservations for this event have already been made.",
-                           "error")
+        if "event" in params:
+            event_id = int(unquote(params["event"]))
+            event = Event.objects.get(pk=event_id)
+            reservations = Reservation.objects.filter(event=event).all()
+            if not reservations:
+                event.delete()
+            else:
+                messages.error(request, f"Cannot delete lot {event.name}. Reservations for this event have already been made.",
+                               "error")
 
     return redirect("genie:events")
 
+@login_required
+def assign_supervisor(request):
+    params = request.GET
+    res = {"success": False}
+    if request.user.profile.is_supervisor():
+        perm = Permission.objects.get(codename="is_supervisor")
+        if "user" in params:
+            user_id = int(unquote(params["user"]))
+            user_rec = User.objects.get(pk=user_id)
+            if user.profile.is_supervisor():
+                user_rec.user_permissions.remove(perm)
+            else:
+                user_rec.user_permissions.add(perm)
+            res["success"] = True
 
+    return JsonResponse(res)
+
+@login_required
+def assign_manager(request):
+    params = request.GET
+    res = {"success": False}
+    if request.user.profile.is_supervisor():
+        perm = Permission.objects.get(codename="is_manager")
+        if "user" in params:
+            user_id = int(unquote(params["user"]))
+            user_rec = User.objects.get(pk=user_id)
+            if user.profile.is_manager():
+                user_rec.user_permissions.remove(perm)
+            else:
+                user_rec.user_permissions.add(perm)
+            res["success"] = True
+
+    return JsonResponse(res)
+
+@login_required
+def assign_attendant(request):
+    params = request.GET
+    res = {"success": False}
+    if request.user.profile.is_supervisor():
+        perm = Permission.objects.get(codename="is_attendant")
+        if "user" in params:
+            user_id = int(unquote(params["user"]))
+            user_rec = User.objects.get(pk=user_id)
+            if user.profile.is_attendant():
+                user_rec.user_permissions.remove(perm)
+            else:
+                user_rec.user_permissions.add(perm)
+            res["success"] = True
+
+    return JsonResponse(res)
 
