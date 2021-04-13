@@ -65,7 +65,8 @@ def reservation(request):
 @login_required
 def user(request):
     if request.user.profile.is_supervisor():
-        return render(request, 'genie/user.html')
+        users = User.objects.all()
+        return render(request, 'genie/user.html', {"users": users})
     return redirect("genie:index")
 
 
@@ -297,7 +298,7 @@ def delete_area(request):
                 if not reservations:
                     area.delete()
                 else:
-                    messages.error(request, f"Cannot delete lot {area.name}. Reservations for this area have already been made.",
+                    messages.error(request, f"Cannot delete area {area.areaIdentifier}. Reservations for this area have already been made.",
                                    "error")
                 return HttpResponsePermanentRedirect(f"/assign_areas?lot={area.parkingLot.pk}")
     return redirect("genie:index")
@@ -334,7 +335,7 @@ def delete_event(request):
             if not reservations:
                 event.delete()
             else:
-                messages.error(request, f"Cannot delete lot {event.name}. Reservations for this event have already been made.",
+                messages.error(request, f"Cannot delete event {event.name}. Reservations for this event have already been made.",
                                "error")
 
     return redirect("genie:events")

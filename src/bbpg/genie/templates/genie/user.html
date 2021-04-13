@@ -12,12 +12,13 @@
 				<th>Balance</th>
 				<th>Assigned Lots</th>
 			</tr>
+            {% for user in users %}
 			<tr>
-				<td>user.user</td>
+				<td>{{ user.username }}</td>
 				<td>
 					<div class="form-check-inline">
 						<label class="form-check-label">
-							<input type="checkbox" class="form-check-input" value="">Manager
+							<input type="checkbox" class="form-check-input"  value="">Manager
 						</label>
 					</div>
 					<div class="form-check-inline">
@@ -34,6 +35,7 @@
 				<td>$45</td>
 				<td>7</td>
 			</tr>
+            {% endfor %}
 		</table></div>
 		<br />
 		<br />
