@@ -23,6 +23,7 @@ urlpatterns = [
 	path("assign_areas/", views.assign_areas, name="assign_areas"),
 	path("delete_lot/", views.delete_lot, name="delete_lot"),
 	path("update_area/", views.update_area, name="update_area"),
-	path("add_area/", views.add_area, name="add_area")
+	path("add_area/", views.add_area, name="add_area"),
+	path("add_event", views.add_event, name="")
 
 ]
