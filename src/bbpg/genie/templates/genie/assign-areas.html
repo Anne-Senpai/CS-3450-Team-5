@@ -3,6 +3,18 @@
 {% block title %}Assign Areas{% endblock %}
 {% block content %}
 
+<div class="toast sticky-top float-right mt-4" data-autohide="false">
+	<div class="toast-header bg-danger">
+		<strong class="mr-auto text-white">Oops!</strong>
+		<button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+	</div>
+	<div class="toast-body">
+		{% for message in messages %}
+		{{ message }}
+		{% endfor %}
+	</div>
+</div>
+
 <h1 class="mb-4">Lot Details</h1>
 
 <p class="lead font-weight-bolder mt-3 mb-0">{{ lot.name }}</p>
@@ -92,4 +104,13 @@
 		</div>
 	</div>
 </div>
+
+<script>
+	{% if messages %}
+	$(document).ready(function(){
+		$('.toast').toast('show');
+	});
+	{% endif %}
+</script>
+
 {% endblock %}
