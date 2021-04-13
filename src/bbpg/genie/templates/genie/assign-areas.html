@@ -53,9 +53,11 @@
 					<p><small>*BBPG will take a cut of 15% automatically when a purchase is made</small></p>
 				</div>
 				<div class="modal-footer">
-					<input type="submit" class="btn btn-block btn-outline-success mt-2 mb-3" value="Save Changes"/>
-					<button type="button" data-dismiss="modal" class="btn btn-block btn-outline-danger mt-2">Cancel</button>
+					<input type="submit" class="btn btn-block btn-outline-success mt-4 mb-3" value="Save Changes"/>
+					<button type="button" data-dismiss="modal" class="btn btn-block btn-outline-danger">Cancel</button>
+
 				</div>
+				<p class="text-center"><a href="{% url "genie:delete_area" %}?area={{ area.pk }}" class=" text-danger"><i class="fas fa-times"></i> Delete this area</a></p>
 			</form>
 		</div>
 	</div>
@@ -83,8 +85,8 @@
 					<p><small>*BBPG will take a cut of 15% automatically when a purchase is made</small></p>
 				</div>
 				<div class="modal-footer">
-                    <input type="submit" class="btn btn-block btn-outline-success mt-2 mb-3" value="Add Area"/>
-					<button type="button" data-dismiss="modal" class="btn btn-block btn-outline-danger mt-2"><i class="fas fa-fw fa-times"></i> Cancel</button>
+                    <input type="submit" class="btn btn-block btn-outline-success mt-4 mb-3" value="Add Area"/>
+					<button type="button" data-dismiss="modal" class="btn btn-block btn-outline-danger">Cancel</button>
 				</div>
 			</form>
 		</div>
