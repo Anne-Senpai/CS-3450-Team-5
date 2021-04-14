@@ -48,7 +48,7 @@
 			</tr>
 			{% for reservation in reservations %}
 			<tr>
-				<td class="align-middle pl-3"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 15ch; display:inline-block" data-toggle="tooltip" title="{{ reservation.event.name }}"> {{ reservation.event.name }} &nbsp;</span> <span style="white-space: nowrap; overflow: hidden; display:inline-block"></span><a href="" data-toggle="modal" data-target="#verify-modal" class="align-middle" style="display:inline-block">(Verify)</a></td>
+				<td class="align-middle pl-3"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 12ch; display:inline-block" data-toggle="tooltip" title="{{ reservation.event.name }}"> {{ reservation.event.name }} </span> <span style="white-space: nowrap; overflow: hidden; display:inline-block"></span><a href="" data-toggle="modal" data-target="#verify-modal" class="align-top" style="display:inline-block">(Verify)</a></td>
 				<td class="align-middle">{{ reservation.event.startTime|date:'M d Y h:i A' }}</td>
 				<td class="align-middle">{{ reservation.lotArea.parkingLot.name }}</td>
 				<td class="align-middle">{{ reservation.lotArea.areaIdentifier }}</td>
