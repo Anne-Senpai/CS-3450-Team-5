@@ -25,7 +25,7 @@
 	<div class="row mb-5 mt-3">
 		{% for event in events %}
 		<div class="col-lg-6 col-xl-4">
-			<div class="media d-flex align-items-center mt-3 shadow-sm border rounded popcard">
+			<div class="media d-flex align-items-center my-3 shadow-sm border rounded popcard">
 				<div class="mr-3 bg-info p-3 px-4 text-center text-white" style="width: 123px; height: 120px;">
 					<div class="p-0 m-0 h1 line-height-base text-white">{{ event.startTime|date:'d'}}
 						<div class="p-0 m-0 h5 line-height-base text-white text-uppercase"><small>{{ event.startTime|date:'M' }} {{ event.startTime|date:'Y' }}</small></div></div>
@@ -41,7 +41,7 @@
 
 				</div>
 				{% if user.profile.is_supervisor %}
-					<button type="button" style="z-index: 2; right: 0; bottom: 0;" class="btn btn-link position-absolute mr-3"  data-toggle="modal" data-target="#edit-event_{{ event.pk }}"><i class="fas fa-pencil-alt"></i> Edit</button>
+					<button type="button" style="z-index: 2; right: 0; bottom: 0;" class="btn btn-link position-absolute mr-3 mb-3"  data-toggle="modal" data-target="#edit-event_{{ event.pk }}"><i class="fas fa-pencil-alt"></i> Edit</button>
 				{% endif %}
 			</div>
 
@@ -59,19 +59,19 @@
 							{% csrf_token %}
 							<div class="modal-body">
 								<label for="eventName">Event Name</label>
-								<input type="text" class="form-control" id="eventName_{{ event.pk }}" name="eventName" value="{{ event.name }}" placeholder="Big Cool Event">
+								<input type="text" class="form-control" id="eventName_{{ event.pk }}" name="eventName" value="{{ event.name }}" placeholder="Big Cool Event" required>
 								<br />
 								<label for="eventDate">Date</label>
-								<input type="date" class="form-control" id="eventDate_{{ event.pk }}" name="eventDate" value="{{ event.startTime|date:'Y-m-d' }}" placeholder="mm/dd/yyyy">
+								<input type="date" class="form-control" id="eventDate_{{ event.pk }}" name="eventDate" value="{{ event.startTime|date:'Y-m-d' }}" placeholder="mm/dd/yyyy" required>
 								<br />
 								<label for="startTime">Start Time</label>
-								<input type="time" class="form-control" id="startTime_{{ event.pk }}" name="startTime" value="{{ event.startTime|date:'H:i' }}" placeholder="hh:mm">
+								<input type="time" class="form-control" id="startTime_{{ event.pk }}" name="startTime" value="{{ event.startTime|date:'H:i' }}" placeholder="hh:mm" required>
 								<br />
 								<label for="endTime">End Time</label>
-								<input type="time" class="form-control" id="endTime_{{ event.pk }}" name="endTime" value="{{ event.endTime|date:'H:i' }}" placeholder="hh:mm">
+								<input type="time" class="form-control" id="endTime_{{ event.pk }}" name="endTime" value="{{ event.endTime|date:'H:i' }}" placeholder="hh:mm" required>
 								<br />
 								<label for="address">Address</label>
-								<input type="text" class="form-control" id="address_{{ event.pk }}" name="address" value="{{ event.address }}" placeholder="1234 Main St, Logan, UT">
+								<input type="text" class="form-control" id="address_{{ event.pk }}" name="address" value="{{ event.address }}" placeholder="1234 Main St, Logan, UT" required>
 								<button class="btn btn-info float-right mt-4">Save Changes</button>
 							</div>
 						</form>
@@ -96,19 +96,19 @@
 					{% csrf_token %}
 					<div class="modal-body">
 						<label for="eventName">Event Name</label>
-						<input type="text" class="form-control" id="eventName" name="eventName" placeholder="Big Cool Event">
+						<input type="text" class="form-control" id="eventName" name="eventName" placeholder="Big Cool Event" required>
 						<br />
 						<label for="eventDate">Date</label>
-						<input type="date" class="form-control" id="eventDate" name="eventDate" placeholder="mm/dd/yyyy">
+						<input type="date" class="form-control" id="eventDate" name="eventDate" placeholder="mm/dd/yyyy" required>
 						<br />
 						<label for="startTime">Start Time</label>
-						<input type="time" class="form-control" id="startTime" name="startTime" placeholder="hh:mm">
+						<input type="time" class="form-control" id="startTime" name="startTime" placeholder="hh:mm" required>
 						<br />
 						<label for="endTime">End Time</label>
-						<input type="time" class="form-control" id="endTime" name="endTime" placeholder="hh:mm">
+						<input type="time" class="form-control" id="endTime" name="endTime" placeholder="hh:mm" required>
 						<br />
 						<label for="address">Address</label>
-						<input type="text" class="form-control" id="address" name="address" placeholder="1234 Main St, Logan, UT">
+						<input type="text" class="form-control" id="address" name="address" placeholder="1234 Main St, Logan, UT" required>
 						<button class="btn btn-info float-right mt-4">Create</button>
 					</div>
 				</form>
