@@ -33,7 +33,10 @@
         <button type="button" class="pt-0 pl-0 btn btn-link" data-toggle="modal" data-target="#reserve_{{ area.0.pk }}">Reserve</button>
         {% endif %}</td>
 	</tr>
+	{% endfor %}
+</table></div>
 
+{% for area in areas %}
 {% if area.1 > 0 %}
 <div class="modal fade" id="reserve_{{ area.0.pk }}" tabindex="-1" role="dialog" aria-labelledby="reserve_{{ area.0.pk }}" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -63,9 +66,8 @@
   </div>
 </div>
 {% endif %}
-	{% endfor %}
-</table></div>
-<br />
+{% endfor %}
+<br/>
 
 
 {% endblock %}

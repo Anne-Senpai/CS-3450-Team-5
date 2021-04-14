@@ -41,38 +41,41 @@
 			<button type="button" class="pt-0 pl-0 btn btn-link" data-toggle="modal" data-target="#edit-modal_{{ area.pk }}"><i class="fas fa-pencil-alt"></i> Edit</button>
 		</td>
 	</tr>
-
-	<div class="modal fade" id="edit-modal_{{ area.pk }}" tabindex="-1" role="dialog" aria-labelledby="edit-modal_{{ area.pk }}" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content p-4">
-				<div class="modal-header">
-					<h5 class="modal-title" id="edit_area_modal_{{ area.pk }}">Area Details</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<form action="{% url "genie:update_area" %}?area={{ area.pk }}" method="post">
-					{% csrf_token %}
-					<div class="modal-body">
-						<label for="area_{{ area.pk }}">Area ID: </label><input type="text" class="form-control" value="{{ area.areaIdentifier }}" name="area" id="area_{{ area.pk }}" required>
-						<label for="capacity_{{ area.pk }}">Capacity: </label><input type="number" class="form-control" value="{{ area.capacity }}" name="capacity" id="capacity_{{ area.pk }}" required>
-						<label for="type_{{ area.pk }}">Spot Type: </label><input type="text" class="form-control" value="{{ area.type }}" name="type" id="type_{{ area.pk }}" required>
-						<label for="price_{{ area.pk }}">Spot Price: $</label><input type="number" class="form-control" value="{{ area.price }}" name="price" id="price_{{ area.pk }}" required>*
-						<p><small>*BBPG will take a cut of 15% automatically when a purchase is made</small></p>
-					</div>
-					<div class="modal-footer">
-						<input type="submit" class="btn btn-block btn-outline-success mt-4 mb-3" value="Save Changes"/>
-						<button type="button" data-dismiss="modal" class="btn btn-block btn-outline-danger">Cancel</button>
-
-					</div>
-					<p class="text-center"><a href="{% url "genie:delete_area" %}?area={{ area.pk }}" class=" text-danger"><i class="fas fa-times"></i> Delete this area</a></p>
-				</form>
-			</div>
-		</div>
-	</div>
 	{% endfor %}
 
 </table></div>
+
+{% for area in areas %}
+
+<div class="modal fade" id="edit-modal_{{ area.pk }}" tabindex="-1" role="dialog" aria-labelledby="edit-modal_{{ area.pk }}" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content p-4">
+			<div class="modal-header">
+				<h5 class="modal-title" id="edit_area_modal_{{ area.pk }}">Area Details</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form action="{% url "genie:update_area" %}?area={{ area.pk }}" method="post">
+				{% csrf_token %}
+				<div class="modal-body">
+					<label for="area_{{ area.pk }}">Area ID: </label><input type="text" class="form-control" value="{{ area.areaIdentifier }}" name="area" id="area_{{ area.pk }}" required>
+					<label for="capacity_{{ area.pk }}">Capacity: </label><input type="number" class="form-control" value="{{ area.capacity }}" name="capacity" id="capacity_{{ area.pk }}" required>
+					<label for="type_{{ area.pk }}">Spot Type: </label><input type="text" class="form-control" value="{{ area.type }}" name="type" id="type_{{ area.pk }}" required>
+					<label for="price_{{ area.pk }}">Spot Price: $</label><input type="number" class="form-control" value="{{ area.price }}" name="price" id="price_{{ area.pk }}" required>*
+					<p><small>*BBPG will take a cut of 15% automatically when a purchase is made</small></p>
+				</div>
+				<div class="modal-footer">
+					<input type="submit" class="btn btn-block btn-outline-success mt-4 mb-3" value="Save Changes"/>
+					<button type="button" data-dismiss="modal" class="btn btn-block btn-outline-danger">Cancel</button>
+
+				</div>
+				<p class="text-center"><a href="{% url "genie:delete_area" %}?area={{ area.pk }}" class=" text-danger"><i class="fas fa-times"></i> Delete this area</a></p>
+			</form>
+		</div>
+	</div>
+</div>
+{% endfor %}
 
 <button class="p mx-3 my-3 btn btn-primary" data-toggle="modal" data-target="#area-modal"><i class="fa-fw fas fa-plus"></i>New Area</button>
 
