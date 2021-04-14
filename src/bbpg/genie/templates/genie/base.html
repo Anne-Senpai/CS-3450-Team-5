@@ -46,7 +46,7 @@
 </header>
 <body>
 	<main>
-		<div class="container-fluid m-0 p-0">
+		<div class="container-fluid m-0 p-0" style="min-height: calc(65vh - 40px);">
 			{% if user.is_authenticated %}<div class="m-5">{% else %}<div class="m-0">{% endif %}
 				{% if user.is_authenticated %}
 				<div class="row">

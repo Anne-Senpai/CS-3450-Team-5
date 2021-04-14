@@ -22,59 +22,57 @@
 <a class="lead" href="{% url 'genie:index' %}"><i class="fa-fw fas fa-arrow-left"></i> back to dashboard</a>
 
 <h2 class="mt-5">Areas in {{ lot.name }}</h2>
-<div class="row mt-3">
-	<div class="col"><p><strong>Area</strong></p></div>
-	<div class="col"><p><strong>Capacity</strong></p></div>
-	<div class="col"><p><strong>Spot Type</strong></p></div>
-	<div class="col"><p><strong>Price</strong></p></div>
-	<div class="col"><p><strong>Edit</strong></p></div>
-</div>
-<hr class="mt-0" />
-{% for area in areas %}
-<div class="row">
-	<div class="col">{{ area.areaIdentifier }}</div>
-	<div class="col">{{ area.capacity }}</div>
-	<div class="col justify-content-center">
-		<div>
-			<span class="badge badge-pill badge-info mr-2">{{ area.type }}</span>
-		</div>
-	</div>
-	<div class="col">${{ area.price }}</div>
-	<div class="col">
-		<button type="button" class="pt-0 pl-0 btn btn-link" data-toggle="modal" data-target="#edit-modal_{{ area.pk }}"><i class="fas fa-pencil-alt"></i> Edit</button>
-	</div>
-</div>
-<hr class="mt-3" />
 
-<div class="modal fade" id="edit-modal_{{ area.pk }}" tabindex="-1" role="dialog" aria-labelledby="edit-modal_{{ area.pk }}" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content p-4">
-			<div class="modal-header">
-				<h5 class="modal-title" id="edit_area_modal_{{ area.pk }}">Area Details</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+<div class="table-responsive shadow my-5"><table class="table table-striped mb-0">
+	<tr>
+		<th class="pl-3">Area</th>
+		<th>Capacity</th>
+		<th>Spot Type</th>
+		<th>Price</th>
+		<th>Edit</th>
+	</tr>
+	{% for area in areas %}
+	<tr>
+		<td class="align-middle pl-3">{{ area.areaIdentifier }}</td>
+		<td class="align-middle">{{ area.capacity }}</td>
+		<td class="align-middle"><span class="badge badge-pill badge-info mr-2">{{ area.type }}</span></td>
+		<td class="align-middle">${{ area.price }}</td>
+		<td class="align-middle">
+			<button type="button" class="pt-0 pl-0 btn btn-link" data-toggle="modal" data-target="#edit-modal_{{ area.pk }}"><i class="fas fa-pencil-alt"></i> Edit</button>
+		</td>
+	</tr>
+
+	<div class="modal fade" id="edit-modal_{{ area.pk }}" tabindex="-1" role="dialog" aria-labelledby="edit-modal_{{ area.pk }}" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content p-4">
+				<div class="modal-header">
+					<h5 class="modal-title" id="edit_area_modal_{{ area.pk }}">Area Details</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form action="{% url "genie:update_area" %}?area={{ area.pk }}" method="post">
+					{% csrf_token %}
+					<div class="modal-body">
+						<label for="area_{{ area.pk }}">Area ID: </label><input type="text" class="form-control" value="{{ area.areaIdentifier }}" name="area" id="area_{{ area.pk }}">
+						<label for="capacity_{{ area.pk }}">Capacity: </label><input type="number" class="form-control" value="{{ area.capacity }}" name="capacity" id="capacity_{{ area.pk }}">
+						<label for="type_{{ area.pk }}">Spot Type: </label><input type="text" class="form-control" value="{{ area.type }}" name="type" id="type_{{ area.pk }}">
+						<label for="price_{{ area.pk }}">Spot Price: $</label><input type="number" class="form-control" value="{{ area.price }}" name="price" id="price_{{ area.pk }}">*
+						<p><small>*BBPG will take a cut of 15% automatically when a purchase is made</small></p>
+					</div>
+					<div class="modal-footer">
+						<input type="submit" class="btn btn-block btn-outline-success mt-4 mb-3" value="Save Changes"/>
+						<button type="button" data-dismiss="modal" class="btn btn-block btn-outline-danger">Cancel</button>
+
+					</div>
+					<p class="text-center"><a href="{% url "genie:delete_area" %}?area={{ area.pk }}" class=" text-danger"><i class="fas fa-times"></i> Delete this area</a></p>
+				</form>
 			</div>
-			<form action="{% url "genie:update_area" %}?area={{ area.pk }}" method="post">
-                {% csrf_token %}
-				<div class="modal-body">
-					<label for="area_{{ area.pk }}">Area ID: </label><input type="text" class="form-control" value="{{ area.areaIdentifier }}" name="area" id="area_{{ area.pk }}">
-					<label for="capacity_{{ area.pk }}">Capacity: </label><input type="number" class="form-control" value="{{ area.capacity }}" name="capacity" id="capacity_{{ area.pk }}">
-					<label for="type_{{ area.pk }}">Spot Type: </label><input type="text" class="form-control" value="{{ area.type }}" name="type" id="type_{{ area.pk }}">
-					<label for="price_{{ area.pk }}">Spot Price: $</label><input type="number" class="form-control" value="{{ area.price }}" name="price" id="price_{{ area.pk }}">*
-					<p><small>*BBPG will take a cut of 15% automatically when a purchase is made</small></p>
-				</div>
-				<div class="modal-footer">
-					<input type="submit" class="btn btn-block btn-outline-success mt-4 mb-3" value="Save Changes"/>
-					<button type="button" data-dismiss="modal" class="btn btn-block btn-outline-danger">Cancel</button>
-
-				</div>
-				<p class="text-center"><a href="{% url "genie:delete_area" %}?area={{ area.pk }}" class=" text-danger"><i class="fas fa-times"></i> Delete this area</a></p>
-			</form>
 		</div>
 	</div>
-</div>
-{% endfor %}
+	{% endfor %}
+
+</table></div>
 
 <button class="p mx-3 my-3 btn btn-primary" data-toggle="modal" data-target="#area-modal"><i class="fa-fw fas fa-plus"></i>New Area</button>
 
@@ -88,7 +86,7 @@
 				</button>
 			</div>
 			<form method="post" action="{% url "genie:add_area" %}?lot={{ lot.pk }}">
-                {% csrf_token %}
+				{% csrf_token %}
 				<div class="modal-body">
 					<label for="new_area">Area ID: </label><input type="text" class="form-control" name="new_area" id="new_area">
 					<label for="new_capacity">Capacity: </label><input type="number" class="form-control" name="new_capacity" id="new_capacity">
@@ -97,7 +95,7 @@
 					<p><small>*BBPG will take a cut of 15% automatically when a purchase is made</small></p>
 				</div>
 				<div class="modal-footer">
-                    <input type="submit" class="btn btn-block btn-outline-success mt-4 mb-3" value="Add Area"/>
+					<input type="submit" class="btn btn-block btn-outline-success mt-4 mb-3" value="Add Area"/>
 					<button type="button" data-dismiss="modal" class="btn btn-block btn-outline-danger">Cancel</button>
 				</div>
 			</form>
