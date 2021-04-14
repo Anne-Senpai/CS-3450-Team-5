@@ -2,47 +2,50 @@ import datetime
 
 from django.test import TestCase
 from django.contrib.auth.models import User, Permission
-from models import Event, Reservation, ParkingLot, LotArea, Profile
+from genie.models import Event, Reservation, ParkingLot, LotArea, Profile
 from django.contrib.auth.models import User, Permission
 
-arthur = User.objects.create_user(first_name="Arthur", last_name="Pendragon", password="tuna",
-                                  username="sir.arthur")
-arthur.save()
-
-parkingLot = ParkingLot(owner=arthur, name="Arthur's Kingdom", address="123 Arthur Street")
-
-start = datetime.datetime.now()
-end = datetime.datetime.now()
-
-event = Event(startTime=start, endTime=end, name="Tuna Fish", description="Eat Yummy Dinner!!", address="123 Arthur Street", parkingLots=parkingLot)
-
-lotArea = LotArea(areaIdentifier="Area 51", parkingLot=parkingLot, price="Your left kidney", type="Regular", capacity="1")
 class unittest(TestCase):
+    def __init__(self, *args, **kwargs):
+        super(unittest, self).__init__(*args, **kwargs)
+        self.user = User.objects.get(username="manager.user")
 
+        self.parkingLot = ParkingLot(owner=self.user, name="Arthur's Kingdom", address="123 Arthur Street")
+        self.parkingLot.save()
+        self.start = datetime.datetime.now()
+        self.end = datetime.datetime.now()
+
+        self.event = Event(startTime=self.start, endTime=self.end, name="Tuna Fish", description="Eat Yummy Dinner!!",
+                      address="123 Arthur Street")
+        self.event.save()
+
+
+        self.lotArea = LotArea(areaIdentifier="Area 51", parkingLot=self.parkingLot, price="Your left kidney", type="Regular",
+                          capacity="1")
 
     def testLot(self):
-        self.assertTrue(parkingLot != None)
-        self.assertEqual(parkingLot.owner, arthur)
-        self.assertEqual(parkingLot.name, "Arthur's Kingdom")
-        self.assertEqual(parkingLot.address, "123 Arthur Street")
+        self.assertTrue(self.parkingLot != None)
+        self.assertEqual(self.parkingLot.owner, self.user)
+        self.assertEqual(self.parkingLot.name, "Arthur's Kingdom")
+        self.assertEqual(self.parkingLot.address, "123 Arthur Street")
 
 
     def testEvent(self):
-        self.assertTrue(event != None)
-        self.assertEqual(parkingLot.startTime, start)
-        self.assertEqual(parkingLot.endTime, end)
-        self.assertEqual(parkingLot.name, "Tuna Fish")
-        self.assertEqual(parkingLot.description, "Eat Yummy Dinner!!")
-        self.assertEqual(parkingLot.address, "123 Arthur Street")
-        self.assertEqual(parkingLot.parkingLots, parkingLot)
+        self.assertTrue(self.event != None)
+        self.assertEqual(self.event.startTime, self.start)
+        self.assertEqual(self.event.endTime, self.end)
+        self.assertEqual(self.event.name, "Tuna Fish")
+        self.assertEqual(self.event.description, "Eat Yummy Dinner!!")
+        self.assertEqual(self.event.address, "123 Arthur Street")
+
 
     def testLotArea(self):
-        self.assertTrue(lotArea != None)
-        self.assertEqual(lotArea.areaIdentifier, "Area 51")
-        self.assertEqual(lotArea.parkingLot, parkingLot)
-        self.assertEqual(lotArea.price, "Your left kidney")
-        self.assertEqual(lotArea.type, "Regular")
-        self.assertEqual(lotArea.capacity, "1")
+        self.assertTrue(self.lotArea != None)
+        self.assertEqual(self.lotArea.areaIdentifier, "Area 51")
+        self.assertEqual(self.lotArea.parkingLot, self.parkingLot)
+        self.assertEqual(self.lotArea.price, "Your left kidney")
+        self.assertEqual(self.lotArea.type, "Regular")
+        self.assertEqual(self.lotArea.capacity, "1")
 
 
 

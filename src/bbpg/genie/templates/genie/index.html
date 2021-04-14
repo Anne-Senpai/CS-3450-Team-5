@@ -80,7 +80,7 @@
 							href="#eventItems{{ lot.pk }}" onclick="dropToggle(this)"><i class="fas fa-angle-down"></i> Assigned</a> ({{ lot.event_set.all|length }})</span>
 							<a class="btn btn-link ml-4" href="{% url 'genie:assign_events' %}?lot={{ lot.pk }}"><i class="fas fa-plus"></i> Assign Event</a>
 							<div id="eventItems{{ lot.pk }}" class="collapse">
-								{% for event in lot.event_set.all %}
+								{% for event in lot.event_set.all|dictsort:"startTime" %}
 								<strong style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 15ch; display:inline-block" data-toggle="tooltip" title="{{ event.name }}"> {{ event.name }}</strong> <span style="white-space: nowrap; overflow: hidden; display:inline-block"> {{ event.startTime|date:'M d Y h:i A' }}</span><br>
 								{% endfor %}
 							</div>
