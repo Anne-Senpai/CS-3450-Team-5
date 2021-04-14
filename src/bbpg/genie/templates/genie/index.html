@@ -48,7 +48,7 @@
 			</tr>
 			{% for reservation in reservations %}
 			<tr>
-				<td class="align-middle pl-3"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 15ch; display:inline-block" data-toggle="tooltip" title="{{ reservation.event.name }}"> {{ reservation.event.name }} &nbsp;</span> <span style="white-space: nowrap; overflow: hidden; display:inline-block"></span><a href="" data-toggle="modal" data-target="#verify-modal" class="align-middle" style="display:inline-block">(Verify)</a></td>
+				<td class="align-middle pl-3"><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 12ch; display:inline-block" data-toggle="tooltip" title="{{ reservation.event.name }}"> {{ reservation.event.name }} </span> <span style="white-space: nowrap; overflow: hidden; display:inline-block"></span><a href="" data-toggle="modal" data-target="#verify-modal" class="align-top" style="display:inline-block">(Verify)</a></td>
 				<td class="align-middle">{{ reservation.event.startTime|date:'M d Y h:i A' }}</td>
 				<td class="align-middle">{{ reservation.lotArea.parkingLot.name }}</td>
 				<td class="align-middle">{{ reservation.lotArea.areaIdentifier }}</td>
@@ -92,7 +92,6 @@
 				{% endif %}
 			</div>
 		</div>
-=
 		{% for reservation in reservations %}
 		<div class="modal fade" id="verify-modal" tabindex="-1" role="dialog" aria-labelledby="verify-modal" aria-hidden="true">
 			<div class="modal-dialog" role="document">
@@ -104,7 +103,7 @@
 						</button>
 					</div>
 					<p class="mt-3 mx-3">Please show this QR code to your Lot Attendant for verification: </p>
-					<img src="https://quickchart.io/qr?text=http%3A%2F%2F{{ request.get_host|urlencode }}{% url "genie:verify" %}%3Fcode={{ reservation.code|urlencode }}" alt="{% url "genie:index" %}"/>
+					<img class="w-75 mx-auto" src="https://quickchart.io/qr?text=http%3A%2F%2F{{ request.get_host|urlencode }}{% url "genie:verify" %}%3Fcode={{ reservation.code|urlencode }}" alt="{% url "genie:index" %}"/>
 
 				</div>
 			</div>
