@@ -2,7 +2,7 @@ import datetime
 
 from django.test import TestCase
 from django.contrib.auth.models import User, Permission
-from django.models import Event, Reservation, ParkingLot, LotArea, Profile
+from models import Event, Reservation, ParkingLot, LotArea, Profile
 from django.contrib.auth.models import User, Permission
 
 arthur = User.objects.create_user(first_name="Arthur", last_name="Pendragon", password="tuna",

@@ -41,6 +41,14 @@ class ParkingLot(models.Model):
 
         return num_spots
 
+    def num_spots_available(self, event):
+        num_spots = 0
+        lot_areas = self.lotarea_set.all()
+        for area in lot_areas:
+            num_spots += area.num_spots_available(event)
+
+        return num_spots
+
 class Event(models.Model):
     startTime = models.DateTimeField('Start Time')
     endTime = models.DateTimeField('End Time')

@@ -36,10 +36,10 @@ have these set up on our personal computers for use.
 
 ## Unit Testing Instructions:
 
-Unit tests will be provided as an option in the source code. simply start 
-up the source code and choose the unit testing option. from there, it will
-show you what parts of the project are operational, and which are still 
-under construction.
+Unit tests will be provided as an option in the source code. there are tests provided for creating an event, a parking lot, and a parking section. Run unittests.py to check the functionality. our tests of the system indicate that all of the unit tests pass.
+
+1.cd .../bbpg/\
+2.python manage.py test
 
 ## System Testing Instructions:
 
