@@ -39,7 +39,8 @@ have these set up on our personal computers for use.
 
 Unit tests will be provided as an option in the source code. there are tests provided for creating an event, a parking lot, and a parking section. Run unittests.py to check the functionality. our tests of the system indicate that all of the unit tests pass.
 
-1.cd .../bbpg/python manage.py test
+1. cd .../bbpg/
+2. python manage.py test
 
 ## System Testing Instructions:
 
