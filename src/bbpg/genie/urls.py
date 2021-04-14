@@ -30,6 +30,7 @@ urlpatterns = [
 	path("delete_event/", views.delete_event, name="delete_event"),
 	path("assign_supervisor/", views.assign_supervisor, name="assign_supervisor"),
 	path("assign_manager/", views.assign_manager, name="assign_manager"),
-	path("assign_attendant/", views.assign_attendant, name="assign_attendant")
+	path("assign_attendant/", views.assign_attendant, name="assign_attendant"),
+	path("verify/", views.verify, name="verify")
 
 ]
