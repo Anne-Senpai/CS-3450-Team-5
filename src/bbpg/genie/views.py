@@ -184,7 +184,7 @@ def cancel_reservation(request):
     if "reservation" in params:
         reserve_id = int(unquote(params["reservation"]))
         reserve = Reservation.objects.get(pk=reserve_id)
-        if request.user == reservation.user:
+        if request.user == reserve.user:
             refund = reserve.lotArea.price
             reserve.delete()
             prof = request.user.profile
@@ -314,8 +314,9 @@ def add_event(request):
         endTime = params["endTime"]
         address = params["address"]
 
-        startDatetime = datetime.datetime.strptime(f"{date} {startTime}", '%Y-%m-%d %H:%M')
-        endDatetime = datetime.datetime.strptime(f"{date} {endTime}", '%Y-%m-%d %H:%M')
+        format = '%m/%d/%Y %H:%M' if "/" in date else '%Y-%m-%d %H:%M'
+        startDatetime = datetime.datetime.strptime(f"{date} {startTime}", format)
+        endDatetime = datetime.datetime.strptime(f"{date} {endTime}", format)
 
         new_event = Event(name=name, address=address, startTime=startDatetime, endTime=endDatetime)
         new_event.save()
@@ -336,8 +337,9 @@ def update_event(request):
             endTime = params["endTime"]
             address = params["address"]
 
-            startDatetime = datetime.datetime.strptime(f"{date} {startTime}", '%Y-%m-%d %H:%M')
-            endDatetime = datetime.datetime.strptime(f"{date} {endTime}", '%Y-%m-%d %H:%M')
+            format = '%m/%d/%Y %H:%M' if "/" in date else '%Y-%m-%d %H:%M'
+            startDatetime = datetime.datetime.strptime(f"{date} {startTime}", format)
+            endDatetime = datetime.datetime.strptime(f"{date} {endTime}", format)
 
             event.name = name
             event.address = address
@@ -417,4 +419,14 @@ def assign_attendant(request):
             res["success"] = True
 
     return JsonResponse(res)
+
+@login_required
+def verify(request):
+    if request.user.profile.is_attendant():
+        params = request.GET
+        if "code" in params:
+            code = unquote(params["code"])
+            reserve = Reservation.objects.get(code=code)
+            return render(request, "genie/verify.html", {"reservation": reserve})
+    return redirect("genie:index")
 
