@@ -30,25 +30,25 @@ have these set up on our personal computers for use.
 
 ## Build instructions:
 
-1. pip install -r requirement.txt\
+1. pip install Django\
 2. cd .../bbpg/
-3. python manage.py runserver  
+3. python manage.py migrate
+4. python manage.py runserver 
 
 ## Unit Testing Instructions:
 
 Unit tests will be provided as an option in the source code. there are tests provided for creating an event, a parking lot, and a parking section. Run unittests.py to check the functionality. our tests of the system indicate that all of the unit tests pass.
 
-1. cd .../bbpg/
-2. python manage.py test
+1.cd .../bbpg/
+2.python manage.py test
 
 ## System Testing Instructions:
 
 When testing the system, there are several cases that should be checked for;
 
-1. purchasing a parking space for varying amounts of time
+1. purchasing a parking space for an event
 2. overriding a parking space sale
 3. refunding a parking space sale
-4. adding time to your purchased space
 5. verifying the code for a purchased space
 6. etc.
 
