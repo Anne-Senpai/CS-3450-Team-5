@@ -19,8 +19,8 @@ from django.contrib import messages
 @login_required
 def index(request):
     u = request.user
-    reservations = Reservation.objects.filter(user=u)
-    ParkingLots = ParkingLot.objects.filter(owner=u)
+    reservations = Reservation.objects.filter(user=u).order_by("event__startTime")
+    ParkingLots = ParkingLot.objects.filter(owner=u).order_by("name")
     ctx = {"reservations": reservations, "lots": ParkingLots}
 
     return render(request, 'genie/index.html', ctx)
@@ -32,8 +32,12 @@ def lots(request):
     if 'event' in params:
         event = int(unquote(params['event']))
         event_obj = Event.objects.get(pk=event)
-        lts = ParkingLot.objects.filter(event=event_obj)
-        return render(request, 'genie/lots.html', {"lots": lts, "event": event_obj})
+        lts = ParkingLot.objects.filter(event=event_obj).order_by("name")
+
+        lot_avail_map = []
+        for lot in lts:
+            lot_avail_map.append([lot, lot.num_spots_available(event_obj)])
+        return render(request, 'genie/lots.html', {"lots": lot_avail_map, "event": event_obj})
 
     else:
         return redirect("genie:events")
@@ -48,7 +52,7 @@ def spots(request):
         lot = int(unquote(params['lot']))
         lot_obj = ParkingLot.objects.get(pk=lot)
         area_avail_map = []
-        areas = LotArea.objects.filter(parkingLot=lot_obj)
+        areas = LotArea.objects.filter(parkingLot=lot_obj).order_by("areaIdentifier")
         for area in areas:
             area_avail_map.append([area, area.num_spots_available(event_obj)])
         return render(request, 'genie/areas.html', {"event": event_obj, "lot": lot_obj, "areas": area_avail_map})
@@ -65,7 +69,7 @@ def reservation(request):
 @login_required
 def user(request):
     if request.user.profile.is_supervisor():
-        users = User.objects.all()
+        users = User.objects.all().order_by("username")
         return render(request, 'genie/user.html', {"users": users})
     return redirect("genie:index")
 
@@ -94,7 +98,7 @@ def register(request):
 
 
 def events(request):
-    evts = Event.objects.filter(startTime__gt=datetime.datetime.now())
+    evts = Event.objects.filter(startTime__gt=datetime.datetime.now()).order_by("startTime")
     return render(request, "genie/events.html", {"events": evts})
 
 
@@ -126,7 +130,7 @@ def assign_events(request):
             lot_id = int(unquote(params["lot"]))
             lot = ParkingLot.objects.get(pk=lot_id)
             if request.user == lot.owner:
-                evts = Event.objects.filter(startTime__gt=datetime.datetime.now())
+                evts = Event.objects.filter(startTime__gt=datetime.datetime.now()).order_by("startTime")
                 return render(request, "genie/assign_event.html", {"events": evts, "lot": lot})
 
 
@@ -219,7 +223,7 @@ def assign_areas(request):
         if "lot" in params:
             lot_record = ParkingLot.objects.get(pk=int(unquote(params["lot"])))
             if request.user == lot_record.owner:
-                areas = lot_record.lotarea_set.all()
+                areas = lot_record.lotarea_set.all().order_by("areaIdentifier")
 
                 return render(request, "genie/assign-areas.html", {"lot": lot_record, "areas": areas})
     return redirect("genie:index")

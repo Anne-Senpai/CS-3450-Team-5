@@ -1,5 +1,8 @@
 from django.test import TestCase
 from genie.models import Event, Reservation, ParkingLot, LotArea, Profile
+from django.contrib.auth.models import User, Permission
+
+parkingLot = ParkingLot(name="Arthur's Kingdom", address="123 Arthur Street", )
 
 class unittest(TestCase):
 

@@ -14,10 +14,10 @@
     <div class="col-sm-6 col-lg-4 d-flex">
         <div class="card my-3 w-100 shadow-sm popcard">
             <div class="card-body">
-                <h2 class="h4 mt-0"><a class="text-primary stretched-link" href="{% url 'genie:spots' %}?event={{ event.pk }}&lot={{ lot.pk }}">{{ lot.name }}</a></h2>
-                <p class="m-0"><i class="fas fa-map-marker-alt fa-fw fa-sm text-primary">&nbsp;</i>{{ lot.address }}</p>
-                <p class="m-0"><strong>Areas Available:</strong> {{ lot.get_num_spots }}</p>
-                <p class="">{% for type in lot.get_types %}
+                <h2 class="h4 mt-0"><a class="text-primary stretched-link" href="{% url 'genie:spots' %}?event={{ event.pk }}&lot={{ lot.0.pk }}">{{ lot.0.name }}</a></h2>
+                <p class="m-0"><i class="fas fa-map-marker-alt fa-fw fa-sm text-primary">&nbsp;</i>{{ lot.0.address }}</p>
+                <p class="m-0"><strong>Spots Available:</strong> {{ lot.1 }}</p>
+                <p class="">{% for type in lot.0.get_types %}
                     <span class="badge badge-pill badge-info mr-2
                         {% if forloop.counter|divisibleby:4 %}pill-4{% endif %}
                         {% if forloop.counter|divisibleby:3 and not forloop.counter|divisibleby:4 %}pill-3{% endif %}
@@ -26,7 +26,7 @@
                         ">{{ type }}</span>
 
                 {% endfor %}</p>
-                <p class="text-muted mb-0"><small>Posted by {{ lot.owner.username }}</small></p>
+                <p class="text-muted mb-0"><small>Posted by {{ lot.0.owner.username }}</small></p>
             </div>
             <div class="card-footer bg-primary p-2"></div>
         </div>
