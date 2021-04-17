@@ -43,7 +43,10 @@ have these set up on our personal computers for use.
 | manager.user | manger_user |
 | supervisor.user | supervisor_user |
 
- 
+### In order to scan the verification QR code:
+ 1. Add your machine's IPV4 address to allowed hosts in settings.py
+ 2. Run the server using: python manage.py runserver 0.0.0.0:8000
+ 3. If your mobile device is on the same network as your machine, scanning the QR code will take you to the verification page.
 
 ## Unit Testing Instructions:
 
