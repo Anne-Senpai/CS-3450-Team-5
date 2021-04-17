@@ -30,10 +30,20 @@ have these set up on our personal computers for use.
 
 ## Build instructions:
 
-1. pip install django
+1. pip install django django-crispy-forms
 2. cd .../bbpg/
 3. python manage.py migrate
-4. python manage.py runserver 
+4. python manage.py runserver
+
+### User accounts:
+|  Username |  Password |
+|---|---|
+| user.user | user_user |
+| attendant.user | attendant_user |
+| manager.user | manger_user |
+| supervisor.user | supervisor_user |
+
+ 
 
 ## Unit Testing Instructions:
 
