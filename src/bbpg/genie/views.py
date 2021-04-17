@@ -117,8 +117,11 @@ def logout(request):
 def add_funds(request):
     profile = request.user.profile
     funds = float(request.POST["funds_to_add"])
-    profile.balance = profile.balance + funds
-    profile.save()
+    if profile.balance + funds < 0:
+        messages.error(request, f"Balance cannot be less than 0!", "error")
+    else:
+        profile.balance = profile.balance + funds
+        profile.save()
     return redirect("genie:index")
 
 
@@ -166,18 +169,21 @@ def make_reservation(request):
         area = LotArea.objects.get(pk=area_id)
 
         if area.num_spots_available(event) > 0:
+            if area.price > prof.balance:
+                messages.error(request,  f"You do not have enough funds to make this purchase!", "error")
 
-            new_reservation = Reservation(event=event, lotArea=area, user=request.user)
-            code = f"{new_reservation.pk}R{random.randint(111111, 999999)}"
-            new_reservation.code = code
-            new_reservation.save()
+            else:
+                new_reservation = Reservation(event=event, lotArea=area, user=request.user)
+                code = f"{new_reservation.pk}R{random.randint(111111, 999999)}"
+                new_reservation.code = code
+                new_reservation.save()
 
-            prof.balance -= area.price
-            prof.save()
+                prof.balance -= area.price
+                prof.save()
 
-            owner = area.parkingLot.owner.profile
-            owner.balance += area.price * .85
-            owner.save()
+                owner = area.parkingLot.owner.profile
+                owner.balance += area.price * .85
+                owner.save()
 
     return redirect("genie:index")
 
