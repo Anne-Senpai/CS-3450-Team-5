@@ -10,8 +10,8 @@ A web application will be implemented for customers to find and reserve (purchas
 
 	The software will provide functionality for the following actors:
 
-	2.1 - Global Admin: Verifies or creates manager accounts.
-	2.2 - Customer: Reserves parking spots and manages reservations.
+	2.1 - Supervisor: Verifies or creates manager accounts.
+	2.2 - User: Reserves parking spots and manages reservations.
 	2.3 - Lot Manager: Posts parking spots, manages parking spot prices, creates events.
 	2.4 - Lot Attendant: Validates customer purchases on arrival.
 
