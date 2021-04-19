@@ -194,7 +194,7 @@ def cancel_reservation(request):
     if "reservation" in params:
         reserve_id = int(unquote(params["reservation"]))
         reserve = Reservation.objects.get(pk=reserve_id)
-        if pytz.timezone("MST").localize(datetime.datetime.now() - datetime.timedelta(hours=24)) <= reserve.event.startTime:
+        if pytz.timezone("MST").localize(datetime.datetime.now()) >= reserve.event.startTime - datetime.timedelta(hours=24):
             messages.error(request, f"You cannot cancel an a reservation that is within the next 24 hours!", "error")
         elif request.user == reserve.user:
             refund = reserve.lotArea.price
