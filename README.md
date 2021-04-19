@@ -72,5 +72,3 @@ Check all of these, and more to ensure program functinality.
 To access the sprint reports:
 
 CS-3450-Team_5/docs/Milestone 3/
-
-no current notes.
