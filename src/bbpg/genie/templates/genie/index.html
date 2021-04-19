@@ -26,7 +26,7 @@
 </div>
 <p class="lead">Welcome, {{ user.username}}!</p>
 <h2 class="h3 mt-5">Account Balance</h2>
-<p class="card-text"><strong>Remaining Balance: </strong> $<span id="balance">{{ user.profile.balance }}</span></p>
+<p class="card-text"><strong>Remaining Balance: </strong> $<span id="balance">{{ user.profile.balance|floatformat:2 }}</span></p>
 <a id="add_funds" class="btn btn-link" href="#"><i class="fas fa-plus"></i> Add Funds</a>
 <form method="post" action="{% url 'genie:add_funds'%}" id="add_funds_form" hidden>
 	{% csrf_token %}

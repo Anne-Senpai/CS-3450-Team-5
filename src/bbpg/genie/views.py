@@ -182,7 +182,7 @@ def make_reservation(request):
                 prof.save()
 
                 owner = area.parkingLot.owner.profile
-                owner.balance += area.price * .85
+                owner.balance += round(area.price * .85, 2)
                 owner.save()
 
     return redirect("genie:index")
@@ -202,7 +202,7 @@ def cancel_reservation(request):
             prof.save()
 
             owner = reserve.lotArea.parkingLot.owner.profile
-            owner.balance -= reserve.lotArea.price * .85
+            owner.balance -= round(reserve.lotArea.price * .85, 2)
             owner.save()
 
     return redirect("genie:index")
