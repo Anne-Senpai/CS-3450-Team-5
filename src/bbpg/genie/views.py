@@ -174,6 +174,7 @@ def make_reservation(request):
 
             else:
                 new_reservation = Reservation(event=event, lotArea=area, user=request.user)
+                new_reservation.save()
                 code = f"{new_reservation.pk}R{random.randint(111111, 999999)}"
                 new_reservation.code = code
                 new_reservation.save()
