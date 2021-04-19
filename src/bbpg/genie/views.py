@@ -14,7 +14,7 @@ import random
 from django.utils.http import urlencode
 from django.http.response import HttpResponsePermanentRedirect
 from django.contrib import messages
-
+import pytz
 
 @login_required
 def index(request):
@@ -194,7 +194,9 @@ def cancel_reservation(request):
     if "reservation" in params:
         reserve_id = int(unquote(params["reservation"]))
         reserve = Reservation.objects.get(pk=reserve_id)
-        if request.user == reserve.user:
+        if pytz.timezone("MST").localize(datetime.datetime.now() - datetime.timedelta(hours=24)) <= reserve.event.startTime:
+            messages.error(request, f"You cannot cancel an a reservation that is within the next 24 hours!", "error")
+        elif request.user == reserve.user:
             refund = reserve.lotArea.price
             reserve.delete()
             prof = request.user.profile
